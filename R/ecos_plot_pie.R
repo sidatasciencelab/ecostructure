@@ -16,6 +16,9 @@
 #'                    background map - which is a coarse one.
 #' @param adjust A Boolean, indicating whether to adjust for the richness cluster.
 #'               Defaults to TRUE.
+#' @param sf_use_s2 A Boolean, indicating whether to use spherical s2 geometry in sf. 
+#'                  Only change if s2 geometry is required for custom backgroup .shp file.
+#'                  Defaults to FALSE.
 #' @param thresh a numeric value between 0 and 1 indicating the level at which
 #'               to threshold the richness cluster. Sites represented by member-
 #'               ship probability above this threshold of the richness cluster
@@ -67,6 +70,7 @@ ecos_plot_pie = function(omega = NULL,
                          coords = NULL,
                          bgmap_path = NULL,
                          adjust = FALSE,
+                         sf_use_s2 = FALSE,
                          thresh = 0.7,
                          long_lim = c(-180,180),
                          lat_lim = c(-60,90),
@@ -82,7 +86,6 @@ ecos_plot_pie = function(omega = NULL,
                          image_width = 1000,
                          image_height = 800,
                          path = "geostructure_plot.tiff"){
-  
   if(is.null(coords)){
     if(is.null(rownames(omega))){
       stop("coords not provided, omega rownames do not have latitude longitude
@@ -108,14 +111,16 @@ ecos_plot_pie = function(omega = NULL,
   pie_control <- modifyList(pie_control_default, pie_control)
   
   if(is.null(bgmap_path)){
+    sf::sf_use_s2(sf_use_s2)
     message("reading background map shapefile from inst/extdata/ne_110m_coastline 
             folder")
     GlobalCoast <- sf::st_read(system.file("extdata","ne_110m_land",
                      "ne_110m_land.shp",package = "ecostructure"), quiet=T)
   }else{
+    sf::sf_use_s2(sf_use_s2)
     GlobalCoast <- sf::st_read(bgmap_path, quiet = T)
   }
-  
+ 
   glob <- c(xmin=long_lim[1], xmax=long_lim[2], ymin=lat_lim[1], ymax=lat_lim[2])
   glob <- sf::st_bbox(glob)
   glob <- structure(glob, crs = sf::st_crs(GlobalCoast))

@@ -5,7 +5,7 @@
 #' in the sites.
 #' 
 #' @param dat input data matrix of samples along rows and features along sites,
-#'            with each entry a 0/1 signififying presence/absence or counts of
+#'            with each entry a 0/1 signifying presence/absence or counts of
 #'            abundances. 
 #' @param K The number of clusters to fit
 #' @param tol The tolerance level of the model.

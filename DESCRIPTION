@@ -3,11 +3,11 @@ Type: Package
 Title: Visualizing Structure in ecological site-species abundance data
 Version: 0.99.1
 Authors@R: c(
-        person("Kushal", "Dey", email = "kkdey@uchicago.edu", role = c("aut", "cre")),
-        person("Alex", "White", email = "aewhite@uchicago.edu", role = "aut"),
+        person("Kushal", "Dey", email = "deyk@mskcc.org", role = c("aut", "cre")),
+        person("Alex", "White", email = "whiteae@si.edu", role = "aut"),
         person("Trevor", "Price", email = "pricet@uchicago.edu", role = "ctb"),
         person("Matthew", "Stephens", email = "mstephens@uchicago.edu", role = "ctb"))
-Maintainer: Kushal Dey <kkdey@uchicago.edu>
+Maintainer: Alex White <whiteae@si.edu>
 Description: Provides tools to visualize and analyze structure from a site-species abundance data using grade of membership models. Also provides functions to generate global abundance dispersion fields and subsequent global abundance count matrices from a local site-species abundance data and available shapefiles. Additionally, has functions to view how grades of membership or any feature of the site varies with the relative distance profile of the sites and ordering of sites (by some metadata- say elevation).
 Depends:
     R (>= 3.4.0),
