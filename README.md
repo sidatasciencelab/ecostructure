@@ -1,4 +1,4 @@
-## :warning: **Version 1.0 of ecostructure (github.com/kkdey/ecostructure) is deprecated** :warning:  
+### :warning: **Version 1.0 of ecostructure (github.com/kkdey/ecostructure) is deprecated** :warning:  
 Please make sure to use code and docs now maintained by the Smithsonian Data Science Lab (github.com/sidataciencelab/ecostructure). 
 
 # ecostructure
