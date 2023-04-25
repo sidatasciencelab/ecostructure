@@ -48,7 +48,9 @@ library(ecostructure)
 
 Some examples of produced using our **ecostructure** package
 
-<img src="bin/ecostructure.2.001.jpeg" alt="misc" height="600" width="1000" align = "middle">
+<center>
+![]("bin/ecostructure.2.001.jpeg")
+</center>
 
 If you want to try **ecostructure** and replicate figures like this, please check our tutorial [here](https://kkdey.github.io/ecostructure/).
 
