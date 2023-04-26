@@ -7,18 +7,18 @@
 ecos_prepare_by_phylo(dat, tree, collapse_at)
 }
 \arguments{
-\item{tree}{The phylogenetic tree structure on the species or the 
+\item{tree}{The phylogenetic tree structure on the species or the
 column features of the counts matrix. Should be of the form
 \code{.tre}.}
 
 \item{collapse_at}{The point on the tree at which to collapse the tree}
 
-\item{counts}{The abundance counts matrix with samples/sites along the rows 
+\item{counts}{The abundance counts matrix with samples/sites along the rows
 and the species/features along the columns.}
 }
 \value{
-Returns a counts matrix with the features being the 
-phylogenetically collapsed species from the original data based on the 
+Returns a counts matrix with the features being the
+phylogenetically collapsed species from the original data based on the
 tree structure.
 }
 \description{

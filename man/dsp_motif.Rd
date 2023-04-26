@@ -15,28 +15,28 @@ dsp_motif(
 )
 }
 \arguments{
-\item{theta_mat}{The theta output from the model fit from 
+\item{theta_mat}{The theta output from the model fit from
 \code{ecos_fit}}
 
 \item{dsp_fld_res}{The resolution of the dispersion field.}
 
 \item{color_ramp}{Color palette to be used for the heat map.}
 
-\item{raster_latlim}{If disp_fld_list is a list of matrices, the latitudinal range 
+\item{raster_latlim}{If disp_fld_list is a list of matrices, the latitudinal range
 of the dispersion fields must be provided as a vector.}
 
-\item{raster_longlim}{If disp_fld_list is a list of matrices, the longitudinal range 
+\item{raster_longlim}{If disp_fld_list is a list of matrices, the longitudinal range
 of the dispersion fields must be provided as a vector.}
 
 \item{outline_col}{The outline color of the projected map.}
 
-\item{proj}{A character string of projection arguments; the arguments must be entered 
-exactly as in the PROJ.4 documentation. To be evaluated by sp::CRS(). 
+\item{proj}{A character string of projection arguments; the arguments must be entered
+exactly as in the PROJ.4 documentation. To be evaluated by sp::CRS().
 default '+proj=longlat +ellps=WGS84'.}
 }
 \value{
 Returns a heatmap plot, similar to the \code{dsp_plot_map} function
-        for the theta matrix using the specified raster,
+for the theta matrix using the specified raster,
 }
 \description{
 Takes the motif fitted from \code{ecos_fit} and plots the theta

@@ -12,7 +12,7 @@ mask_climate_raster_by_geo_motif(
 )
 }
 \arguments{
-\item{motif_map_raster}{The motif map raster obtained from fitting GoM model 
+\item{motif_map_raster}{The motif map raster obtained from fitting GoM model
 on the species abundance counts data.}
 
 \item{climate_raster}{the climate raster which is to be masked.}

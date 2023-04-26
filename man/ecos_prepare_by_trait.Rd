@@ -7,7 +7,7 @@
 ecos_prepare_by_trait(counts, traits, prop_div = 0.3)
 }
 \arguments{
-\item{counts}{The abundance counts matrix with samples/sites along the rows 
+\item{counts}{The abundance counts matrix with samples/sites along the rows
 and the species/features along the columns.}
 
 \item{traits}{A distance metric between species - a square matrix with
@@ -18,7 +18,7 @@ species along rows and columns and the diagonal element equal to
 to cut the dendrogram.}
 }
 \value{
-The output is a counts matrix with the columns corresponding to the 
+The output is a counts matrix with the columns corresponding to the
 species bins - each bin designated here by the first species entry into the bin.
 }
 \description{

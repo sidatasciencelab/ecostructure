@@ -3,19 +3,25 @@ Type: Package
 Title: Visualizing Structure in ecological site-species abundance data
 Version: 0.99.1
 Authors@R: c(
-        person("Kushal", "Dey", email = "deyk@mskcc.org", role = c("aut", "cre")),
-        person("Alex", "White", email = "whiteae@si.edu", role = "aut"),
-        person("Trevor", "Price", email = "pricet@uchicago.edu", role = "ctb"),
+        person("Alex", "White", email = "whiteae@si.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9708-2406")),
+        person("Kushal", "Dey", email = "deyk@mskcc.org", role = "aut", comment = c(ORCID = "0000-0002-3520-2345")),
+        person("Trevor", "Price", email = "pricet@uchicago.edu", role = "ctb", comment = c(ORCID = "0000-0002-4423-8999")),
         person("Matthew", "Stephens", email = "mstephens@uchicago.edu", role = "ctb"))
 Maintainer: Alex White <whiteae@si.edu>
-Description: Provides tools to visualize and analyze structure from a site-species abundance data using grade of membership models. Also provides functions to generate global abundance dispersion fields and subsequent global abundance count matrices from a local site-species abundance data and available shapefiles. Additionally, has functions to view how grades of membership or any feature of the site varies with the relative distance profile of the sites and ordering of sites (by some metadata- say elevation).
+Description: Provides tools to visualize and analyze structure from a site-species
+    abundance data using grade of membership models. Also provides functions to 
+    generate global abundance dispersion fields and subsequent global abundance 
+    count matrices from a local site-species abundance data and available 
+    shapefiles. Additionally, has functions to view how grades of membership or 
+    any feature of the site varies with the relative distance profile of the sites 
+    and ordering of sites (by some metadata- say elevation).
 Depends:
-    R (>= 3.4.0),
+    R (>= 4.0.0),
     ggplot2 (>= 2.1.0)
-License: GPL (>= 2)
+License: `use_gpl3_license()` 
 LazyData: true
 Encoding: UTF-8
-URL: https://github.com/kkdey/ecostructure
+URL: https://github.com/sidatasciencelab/ecostructure
 Imports:
     raster,
     sp,
@@ -42,4 +48,5 @@ Suggests:
 VignetteBuilder: knitr
 biocViews: Software, Visualization, Ecology
 Remotes: kkdey/methClust, kkdey/CountClust
-RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

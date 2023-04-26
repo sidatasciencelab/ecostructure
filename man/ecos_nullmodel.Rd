@@ -16,7 +16,7 @@ ecos_nullmodel(
 )
 }
 \arguments{
-\item{counts}{The counts matrix (N x G): N- the number of samples (sites), 
+\item{counts}{The counts matrix (N x G): N- the number of samples (sites),
 G- number of features (bird species)}
 
 \item{K}{The number of clusters to fit}
@@ -24,7 +24,7 @@ G- number of features (bird species)}
 \item{tol}{The tolerance limit of the \code{ecos_fit}.}
 
 \item{null.model}{The type of nullmodel used (similar to the
-picante::randomizeMatrix() function argument in 
+picante::randomizeMatrix() function argument in
 picante package)}
 
 \item{iter_fill}{The number of swaps/fills in each randomized matrix build}
@@ -36,18 +36,18 @@ the randomized iterations}
 }
 \value{
 Returns a list with
-       \item{BF.obs}{log Bayes Factor for the observed counts with 
-       K=2 against the null with no clusters}
-       \item{BF.rand}{a vector of log BF for each randomized count 
-       matrix with K=2 against the null with no clusters}
-       \item{pval}{the p-value of the observed log Bayes factor against the
-       ones from randomized matrices}
+\item{BF.obs}{log Bayes Factor for the observed counts with
+K=2 against the null with no clusters}
+\item{BF.rand}{a vector of log BF for each randomized count
+matrix with K=2 against the null with no clusters}
+\item{pval}{the p-value of the observed log Bayes factor against the
+ones from randomized matrices}
 }
 \description{
-Generate randomized matrix of counts 
-given the observed data matrix for a particular null model, 
+Generate randomized matrix of counts
+given the observed data matrix for a particular null model,
 run \code{ecos_fit} on these null matrices and compare the fit
-on null model data with that on the observed data. Used for validating 
+on null model data with that on the observed data. Used for validating
 the clustering.
 }
 \examples{

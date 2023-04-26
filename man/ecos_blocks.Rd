@@ -16,22 +16,22 @@ ecos_blocks(
 }
 \arguments{
 \item{omega}{Matrix of Cluster membership probabilities of each sample
-obtained from \code{ecos_fit()}. The row sums 
+obtained from \code{ecos_fit()}. The row sums
 sum to 1 for each sample.}
 
-\item{blocker_metadata}{a factor metadata used for creating blocks of 
+\item{blocker_metadata}{a factor metadata used for creating blocks of
 Structure plots.}
 
-\item{order_metadata}{A quantitative metadata used for ordering sites 
+\item{order_metadata}{A quantitative metadata used for ordering sites
 in each block.}
 
 \item{palette}{A vector of colors assigned to the clusters. First color in
 the vector is assigned to the cluster labeled as 1, and second
-color in the vector is assigned to the cluster labeled as 2, 
+color in the vector is assigned to the cluster labeled as 2,
 etc. The number of colors must be the same or greater than the
-number of clusters. The recommended choice of color palette 
-here is RColorBrewer, for instance 
-RColorBrewer::brewer.pal(8, "Accent") or 
+number of clusters. The recommended choice of color palette
+here is RColorBrewer, for instance
+RColorBrewer::brewer.pal(8, "Accent") or
 RColorBrewwer::brewer.pal(9, "Set1").}
 
 \item{structure_control}{Control parameters for the Block Structure plot.
@@ -39,7 +39,7 @@ Fixes the title, axis labels, tick sizes, splitting
 line characteristics and panel orientation.}
 
 \item{layout}{The graph layout for plotting the Block Structure output.
-Is missing, automatically determined as a square 
+Is missing, automatically determined as a square
 configuration.}
 }
 \value{

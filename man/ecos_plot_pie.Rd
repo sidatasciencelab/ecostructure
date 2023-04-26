@@ -9,6 +9,7 @@ ecos_plot_pie(
   coords = NULL,
   bgmap_path = NULL,
   adjust = FALSE,
+  sf_use_s2 = FALSE,
   thresh = 0.7,
   long_lim = c(-180, 180),
   lat_lim = c(-60, 90),
@@ -29,21 +30,25 @@ ecos_plot_pie(
 }
 \arguments{
 \item{omega}{Matrix of Cluster membership probabilities of each sample
-obtained from \code{ecos_fit()}. The row sums 
+obtained from \code{ecos_fit()}. The row sums
 sum to 1 for each sample.}
 
 \item{coords}{a matrix of latitude and longitude entries for each site (row)
-of the \code{omega} matrix.This matrix has as many rows as 
-the \code{omega} matrix and two columns for the latitude and 
+of the \code{omega} matrix.This matrix has as many rows as
+the \code{omega} matrix and two columns for the latitude and
 longitude.}
 
-\item{bgmap_path}{The path to the shapefile to be used for plotting the 
-map data. One can choose a shapefile of their own 
-preference of resolution. If missing, we use a default 
+\item{bgmap_path}{The path to the shapefile to be used for plotting the
+map data. One can choose a shapefile of their own
+preference of resolution. If missing, we use a default
 background map - which is a coarse one.}
 
 \item{adjust}{A Boolean, indicating whether to adjust for the richness cluster.
 Defaults to TRUE.}
+
+\item{sf_use_s2}{A Boolean, indicating whether to use spherical s2 geometry in sf.
+Only change if s2 geometry is required for custom backgroup .shp file.
+Defaults to FALSE.}
 
 \item{thresh}{a numeric value between 0 and 1 indicating the level at which
 to threshold the richness cluster. Sites represented by member-
@@ -51,11 +56,11 @@ ship probability above this threshold of the richness cluster
 are removed.}
 
 \item{long_lim}{The limits for the longitude in the map plot.
-The default is \code{c(-180,180)} and removes Antarctica 
+The default is \code{c(-180,180)} and removes Antarctica
 from the map.}
 
 \item{lat_lim}{The limits for the latitude in the map plot.
-The default is \code{c(-60,90)} and removes Antarctica 
+The default is \code{c(-60,90)} and removes Antarctica
 from the map.}
 
 \item{coastline_lwd}{The line width for the coastline plotted in the map.
@@ -66,11 +71,11 @@ Lies between 0 and 1. Defaults to 1.}
 
 \item{radius}{The radius of the pie charts. Defaults to 0.5}
 
-\item{color}{the vector of colors - of same size or more than the number 
-of clusters. If missing, we use a default set of colors- 
+\item{color}{the vector of colors - of same size or more than the number
+of clusters. If missing, we use a default set of colors-
 chosen so that they are distinct from one another.}
 
-\item{pie_control}{The list of control parameters to be passed into the 
+\item{pie_control}{The list of control parameters to be passed into the
 \code{add.pie} function of the package maptools.}
 
 \item{image_width}{The width of the image output. Defaults to 1000.}
@@ -80,9 +85,9 @@ chosen so that they are distinct from one another.}
 \item{path}{The path where the output image is saved.}
 }
 \value{
-Returns a pie chart representation of the memberships obtained 
-        from \code{ecos_fit} on a global species 
-        presence-absence/counts data
+Returns a pie chart representation of the memberships obtained
+from \code{ecos_fit} on a global species
+presence-absence/counts data
 }
 \description{
 Make a pie chart representation of the membership probabilities

@@ -2,8 +2,8 @@
 % Please edit documentation in R/dsp_create_from_gdb.R
 \name{dsp_create_from_gdb}
 \alias{dsp_create_from_gdb}
-\title{Create dispersion fields and a presence absence matrix from geodatabase 
-       file or a shape file containing all species.}
+\title{Create dispersion fields and a presence absence matrix from geodatabase
+file or a shape file containing all species.}
 \usage{
 dsp_create_from_gdb(
   gdb_object,
@@ -18,7 +18,7 @@ dsp_create_from_gdb(
 )
 }
 \arguments{
-\item{gdb_object}{The geodatabase or a single shapefile containing all species to be read 
+\item{gdb_object}{The geodatabase or a single shapefile containing all species to be read
 in ahead of time and provided as an sf object.}
 
 \item{raster_resolution}{The resolution of the raster in degrees.}
@@ -29,13 +29,13 @@ in ahead of time and provided as an sf object.}
 
 \item{raster_longlim}{The longitudinal range.}
 
-\item{species_feature}{The name of the feature (column) that contains the species names 
+\item{species_feature}{The name of the feature (column) that contains the species names
 in the GIS data source.}
 
-\item{precision}{The precision of the initial estimation provided to fasterize. 
-fasterize tends to undercount small species ranges, so is required 
+\item{precision}{The precision of the initial estimation provided to fasterize.
+fasterize tends to undercount small species ranges, so is required
 to keep at a low value in order detect species presences.
-Most users will not need to change, but increaseing this value will 
+Most users will not need to change, but increaseing this value will
 speed up the function but with potential for error.}
 
 \item{species_names}{If you would like to only include a subset of the species is the GIS data source
@@ -47,12 +47,12 @@ Defaults to false.}
 }
 \value{
 Returns 2 lists and 1 matrix. In each list, each element is a
-dispersion field corresponding to the species present in the 
-specific site to which it corresponds. The first list "matrix" 
-contains each dispersion field as a matrix. The second list "raster" returns 
-each dispersion field as a raster. The matrix is a presence absence matrix with 
-species as columns and each individual map cell the rows. The names of the elements 
-of the lists, and the rownames for the presence-absence matrix, are assigned as 
+dispersion field corresponding to the species present in the
+specific site to which it corresponds. The first list "matrix"
+contains each dispersion field as a matrix. The second list "raster" returns
+each dispersion field as a raster. The matrix is a presence absence matrix with
+species as columns and each individual map cell the rows. The names of the elements
+of the lists, and the rownames for the presence-absence matrix, are assigned as
 the lat_long combos for those locations.
 }
 \description{

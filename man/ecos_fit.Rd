@@ -15,7 +15,7 @@ ecos_fit(
 }
 \arguments{
 \item{dat}{input data matrix of samples along rows and features along sites,
-with each entry a 0/1 signififying presence/absence or counts of
+with each entry a 0/1 signifying presence/absence or counts of
 abundances.}
 
 \item{K}{The number of clusters to fit}
@@ -28,8 +28,8 @@ key for picking the best fit model across multiple runs.}
 \item{fit_control}{The control parameters for the model.}
 }
 \value{
-Returns a model fit with \code{omega} as cluster membership 
-        probabilities and \code{theta} as cluster feature matrix.
+Returns a model fit with \code{omega} as cluster membership
+probabilities and \code{theta} as cluster feature matrix.
 }
 \description{
 A grade of membership model for clustering a site by features
