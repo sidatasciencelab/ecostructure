@@ -1,4 +1,4 @@
-### :warning: **Version 1.0 of ecostructure (github.com/kkdey/ecostructure) is deprecated** :warning:  
+### :warning: **Version 0.99.1 of ecostructure (github.com/kkdey/ecostructure) is deprecated** :warning:  
 Please make sure to use code and docs now maintained by the Smithsonian Data Science Lab (github.com/sidataciencelab/ecostructure). 
 
 # ecostructure
@@ -26,6 +26,11 @@ devtools::install_github("kkdey/maptpx"). # this is an updated version of CRAN p
 devtools::install_github("kkdey/CountClust")
 devtools::install_github("sidatsciencelab/ecostructure")
 ```
+**ecostructure** requires access to the "gfortran" library. Mac OS X
+users may encounter the error "library not found for -lgfortran" when
+installing. To fix this error, please follow the instructions at this
+[link](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/). Apple Silicon users should instead follow the directions found [here](https://github.com/bioinfoDZ/RISC/issues/10). 
+
 Then load **ecostructure**
 
 ```R
