@@ -3,3 +3,4 @@ packrat/lib*/
 packrat/src/*
 vignettes/assemblage/
 .DS_Store
+.Rhistory
