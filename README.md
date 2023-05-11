@@ -49,9 +49,6 @@ If you want to try **ecostructure** and replicate figures like this, please chec
  
 - [Alex White](https://sidatasciencelab.github.io/people/leads/alex.html)
 - [Kushal K Dey](https://www.deylab.net/)
-
-This package grew out of a collaboration between Kushal Dey and Alex White while they were graduate students at the University of Chicago. Their advisors played a large role in developing these methods: 
-
 - [Matthew Stephens](http://stephenslab.uchicago.edu/)
 - [Trevor Price](https://pondside.uchicago.edu/ecol-evol/people/price.html)
 
