@@ -4,11 +4,11 @@ subtitle: "Investigating structure in complex ecological data"
 description: |
   A vignette for ecostructure, an R package for clustering and visualization of ecological strucutre across local, regional, phylogenetic, and functional axes of assemblage diversity.  
 author: Alex White
-date: 04/24/2023
+date: 05/11/2023
 bibliography: references.bib
 citation-location: margin
 image: images/ecos.jpeg
-image-alt: Manali sanctuary in India where large numbers of temperate and tropical bird species converge to form complex ecological structure
+image-alt: Manali sanctuary in India where large numbers of temperate and tropical bird species converge to form complex ecological structure.
 toc: true
 filters:
   - lightbox
@@ -19,11 +19,13 @@ lightbox: auto
 knitr::opts_chunk$set(dpi = 90,dev = "png")
 ```
 
-![.](ecostructure.2.001.jpeg)
+![.](../bin/ecostructure.2.001.jpeg)
 
 # Introduction
 
-**ecostructure** is an R package for clustering and visualizing structure in ecological assemblages using Mixed Membership or Grade of Membership (GoM) models (see [reference](https://www.stat.washington.edu/sites/default/files/files/reports/2006/tr492.pdf): -@erosheva2006latent). The package can incorporate ecological data from any spatial scale - your data may reflect anything between species abundances in local communities (e.g., classical community ecology; -@white2019regional) to the presence and absence of species across continents (e.g., macroecology and biogeography; -@white2021dispersal,@li2021grade, @rana2022key). **ecostructure** allows phylogenetic, geographic, and trait data to be incorporated in the clustering framework, producing clusters that represent variation among these axes of diversity when taking the similarity of species into account. In this framework, we call the clusters *motifs*.
+**ecostructure** is an R package for clustering and visualizing structure in ecological assemblages using Mixed Membership or Grade of Membership (GoM) models (see [reference](https://www.stat.washington.edu/sites/default/files/files/reports/2006/tr492.pdf): -@erosheva2006latent). The package can incorporate ecological census data of many kinds - your data may reflect anything from species abundances in local communities (e.g., classical community ecology; -@white2019regional) to the presence and absence of species across continents (e.g., macroecology and biogeography; -@white2019regional,@white2021dispersal,@li2021grade,@rana2022key).
+
+To further parse biological structure in the data, **ecostructure** allows phylogenetic, geographic, and morphological data to be incorporated in the clustering framework, producing clusters that represent variation among these axes of diversity when taking the similarity of species into account. In this framework, we call the clusters *motifs*.
 
 This tutorial focuses on an analysis of bird species assemblages across the globe and how those assemblages converge locally in communities in the Himalayas (-@white2019regional). We showcase the use of the **ecostructure** tools and methods to assess the turnover of species across assemblages and communities, and we illustrate that turnover with visualizations.
 
@@ -35,13 +37,33 @@ The main contributions of the **ecostructure** package are as follows:
 
 -   Tools to process species level data using a phylogeny, a trait dataset, or a GIS dataset in order to examine the contribution of history, function, and geography to species level structure.
 
-The analytical framework provided by **ecostructure** is employed in our accompanying paper (see citation below). The paper focuses on a survey of bird species abundances at 38 local sites across the all elevations in the eastern and western Himalaya, the data from which is provided as part of this package.
+The analytical framework provided by **ecostructure** was first employed in our accompanying 2019 paper (-@white2019regional). That analysis leverages a census of bird species abundances at 38 local sites across the elevations in the eastern and western Himalaya. We provide those data as part of this package.
 
 # Citation
 
-If you find our package useful or want to known more about the underlying methods, please check out our [paper](https://www.nature.com/articles/s41467-019-10253-6):
+If you find the **ecostructure** package or any of the source code in the repository useful for your work, please cite:
 
+```         
 White, Alexander E. and Dey, Kushal K. and Mohan, Dhananjai and Stephens, Matthew and Price, Trevor D. Regional influences on community structure across the tropical-temperate divide. Nature Communications. 2019. 10 (1). 2646. 10.1038/s41467-019-10253-6
+```
+
+Also, be sure to cite to the specific [Zenodo DOI](##ZenodoLink) for the package release you are using. For example:
+
+```         
+@software{ecostructure_2023,
+  author       = {White, Alexander E. and
+                  Dey, Kushal and
+                  Stephens, Matthew and
+                  Price, Trevor},
+  title        = {{ecostructure: an R package for modeling structure in complex ecological data}},
+  month        = nov,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {0.7.0},
+  doi          = {10.5281/zenodo.6619350},
+  url          = {https://doi.org/10.5281/zenodo.6619350}
+}
+```
 
 # Installation
 
@@ -55,30 +77,26 @@ White, Alexander E. and Dey, Kushal K. and Mohan, Dhananjai and Stephens, Matthe
 
 **ecostructure** requires R version $>= 3.4.0$
 
-To install **ecostructure**, first, install the dependencies.
-
-```{r echo=TRUE, eval=FALSE}
-source("https://bioconductor.org/biocLite.R")
-biocLite("Biobase")
-install.packages("devtools")
-devtools::install_github("kkdey/methClust");  
-devtools::install_github("kkdey/CountClust")
-devtools::install_github("TaddyLab/maptpx")
-```
-
-Next, load the dependencies
+To install **ecostructure**, first install the package dependencies.
 
 ```{r warning=FALSE, message=FALSE}
-library(Biobase)
-library(methClust)
-library(CountClust)
-library(maptpx)
+install.packages(devtools)
+install.packages("sf")
+devtools::install_github("kkdey/methClust")
+devtools::install_github("kkdey/maptpx"). # this is an updated version of CRAN package maptpx
+devtools::install_github("kkdey/CountClust")
+devtools::install_github("sidatsciencelab/ecostructure")
 ```
 
-Next, install **ecostructure**.
+**ecostructure** requires access to the "gfortran" library. Mac OS X
+users may encounter the error "library not found for -lgfortran" when
+installing. To fix this error, please follow the instructions at this
+[link](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/). Apple Silicon users should instead follow the directions found [here](https://github.com/bioinfoDZ/RISC/issues/10). 
 
-```{r echo=TRUE, eval=FALSE}
-devtools::install_github("kkdey/ecostructure")
+Then load **ecostructure**
+
+```{r warning=FALSE, message=FALSE}
+library(ecostructure)
 ```
 
 Finally, load the **ecostructure** package.
