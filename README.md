@@ -1,10 +1,14 @@
+ecostructure
+=============================================================
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) 
+[![CircleCI](https://circleci.com/gh/sidatasciencelab/ecostructure.svg?style=svg&circle-token=c025eb22e0d0a3d4efae2b44ee70bcd114f7fc59)](https://app.circleci.com/pipelines/github/sidatasciencelab/ecostructure)
+[![DOI](https://zenodo.org/badge/#####.svg)](https://zenodo.org/badge/latestdoi/####)
+
+
 ### :warning: **Version 0.99.1 of ecostructure (github.com/kkdey/ecostructure) is deprecated** :warning:  
-Please make sure to use code and docs now maintained by the Smithsonian Data Science Lab (github.com/sidataciencelab/ecostructure). 
+Please make sure you are using the code and docs maintained by the Smithsonian Data Science Lab (github.com/sidataciencelab/ecostructure). 
 
-# ecostructure
-### Clustering and visualization of ecological structure in species assemblages
-
-This package contains functions for fitting [STRUCTURE](http://www.genetics.org/content/155/2/945) type models to ecological data, both at local and global geographic scales, together with GIS based visualizations of the fitted models. These *grade-of-membership* models can be used to assess the local representation of large regional biotas, their degree of intermixing in local assemblages, and their rate of turnover across geographic space owing to environmental or climatic turnover. ecostructure makes use of advances in clustering alrogrithms, first from the package CountClust in 1.0 and now leveraging its successor fastTopics in 2.0. 
+This package contains functions for fitting [STRUCTURE](http://www.genetics.org/content/155/2/945) type models to ecological data, both at local and global geographic scales, together with GIS based visualizations of the fitted models. These *grade-of-membership* models can be used to assess the local representation of large regional biotas, their degree of intermixing in local assemblages, and their rate of turnover across geographic space owing to environmental or climatic turnover. ecostructure makes use of advances in clustering alrogrithms, first from the package CountClust in 0.99.1 and now leveraging its successor fastTopics in 2.0. 
 
 ### Citation
 
