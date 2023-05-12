@@ -32,10 +32,6 @@ ecos_fit_binomial_topic_model <- function(X,
     verbose = verbose
   )
   if (numiter.refine > 0) {
-    if (numiter.refine > 20) {
-      cat("Number of EM updates is very large for binomial data. 
-          If model fit is very slow, consider reducing numem < 25. \n")
-    }
     if (verbose != "none") {
       cat("Refining binomial model fit with EM updates.\n")
     }
