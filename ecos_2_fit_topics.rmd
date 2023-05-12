@@ -6,10 +6,16 @@ output: html_document
 ---
 
 ```{r knitr-opts, include=FALSE}
-knitr::opts_chunk$set(comment = "#",collapse = TRUE,results = "hold",
-                      fig.align = "center",dpi = 120)
+knitr::opts_chunk$set(
+  comment = "#", collapse = TRUE, results = "hold",
+  fig.align = "center", dpi = 120
+)
 ```
 
+```{r}
+#devtools::install_github("https://github.com/stephenslab/fastTopics/tree/poisson2binom")
+library(fastTopics)
+```
 
 ```{r load-pkgs, message=FALSE, warning=FALSE}
 library(Matrix)
@@ -21,9 +27,9 @@ set.seed(1)
 
 
 ```{r load-data}
-him_birds_cn <- t(as.matrix(read.csv("data/him_birds_cn.csv",row.names = 1)))
-him_spec_md <- t(as.matrix(read.csv("data/him_spec_md.csv",row.names = 1)))
-him_grids_md <- t(as.matrix(read.csv("data/him_grid_md.csv",row.names = 1)))
+him_birds_cn <- t(as.matrix(read.csv("data/him_birds_cn.csv", row.names = 1)))
+him_spec_md <- t(as.matrix(read.csv("data/him_spec_md.csv", row.names = 1)))
+him_grids_md <- t(as.matrix(read.csv("data/him_grid_md.csv", row.names = 1)))
 dim(him_birds_cn)
 ```
 
@@ -38,40 +44,40 @@ We fit the model below but first convert the matrix to a sparseMatrix to save so
 
 ```{r fit-topic-model, eval=FALSE}
 fit <- fit_topic_model(as(him_birds_cn, "sparseMatrix"),
-                       numiter.main = 150,
-                       numiter.refine = 150,
-                       k = 2)
+  numiter.main = 150,
+  numiter.refine = 150,
+  k = 2
+)
 ```
 
 ```{r plot-loglik, fig.height=2, fig.width=4}
-plot_progress(fit,x = "iter",add.point.every = 10,colors = "black") +
+plot_progress(fit, x = "iter", add.point.every = 10, colors = "black") +
   theme_cowplot(font_size = 10)
 ```
 ```{r}
-loglik <- loglik_multinom_topic_model(him_birds_cn,fit)
+loglik <- loglik_multinom_topic_model(him_birds_cn, fit)
 ```
 This can be used to assess how well the topic model "fits" each cell.
 
 ```{r loglik-2, fig.height=2, fig.width=4.5}
 pdat <- data.frame(loglik)
-ggplot(pdat,aes(loglik)) +
-  geom_histogram(bins = 64,color = "white",fill = "black",linewidth = 0.25) +
+ggplot(pdat, aes(loglik)) +
+  geom_histogram(bins = 64, color = "white", fill = "black", linewidth = 0.25) +
   labs(y = "number of sites") +
   theme_cowplot(font_size = 10)
 ```
 ```{r}
 set.seed(1)
-de <- de_analysis(fit,him_birds_cn,pseudocount = 0.1,
-                  control = list(ns = 1e4,nc = 4))
+de <- de_analysis(fit, him_birds_cn,
+  pseudocount = 0.1,
+  control = list(ns = 1e4, nc = 4)
+)
 ```
 
 
 ```{r}
-volcano_plot(de,k = 2,labels = as.character(as.vector(colnames(him_birds_cn))))
+volcano_plot(de, k = 2, labels = as.character(as.vector(colnames(him_birds_cn))))
 ```
 ```{r}
 sessionInfo()
-
 ```
-
-

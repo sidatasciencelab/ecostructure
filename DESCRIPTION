@@ -16,7 +16,7 @@ Description: Provides tools to visualize and analyze structure from a site-speci
     any feature of the site varies with the relative distance profile of the sites 
     and ordering of sites (by some metadata- say elevation).
 Depends:
-    R (>= 4.0.0),
+    R (>= 3.4.0),
     ggplot2 (>= 2.1.0)
 License: `use_gpl3_license()` 
 LazyData: true
