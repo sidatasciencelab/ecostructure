@@ -1,4 +1,4 @@
-ecostructure
+ecostructure: grade-of-membership clustering for ecology
 =============================================================
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) 
 [![CircleCI](https://circleci.com/gh/sidatasciencelab/ecostructure.svg?style=svg&circle-token=c025eb22e0d0a3d4efae2b44ee70bcd114f7fc59)](https://app.circleci.com/pipelines/github/sidatasciencelab/ecostructure)
