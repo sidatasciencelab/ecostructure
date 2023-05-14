@@ -2,7 +2,8 @@ ecostructure: grade-of-membership clustering and visualization for ecology
 =============================================================
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active) 
 [![CircleCI](https://circleci.com/gh/sidatasciencelab/ecostructure.svg?style=svg&circle-token=c025eb22e0d0a3d4efae2b44ee70bcd114f7fc59)](https://app.circleci.com/pipelines/github/sidatasciencelab/ecostructure)
-[![DOI](https://zenodo.org/badge/#####.svg)](https://zenodo.org/badge/latestdoi/####)
+[![DOI](https://zenodo.org/badge/45345.svg)](https://zenodo.org/badge/latestdoi/####)
+[![Follow](https://img.shields.io/twitter/follow/SIDataScience.svg?style=social&style=flat&logo=twitter&label=Follow&color=blue)](https://twitter.com/SIDataScience)
 
 
 ### :warning: **Version 0.99.1 of ecostructure (github.com/kkdey/ecostructure) is deprecated** :warning:  
