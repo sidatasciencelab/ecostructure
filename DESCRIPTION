@@ -1,7 +1,7 @@
 Package: ecostructure
 Type: Package
 Title: Visualizing Structure in ecological site-species abundance data
-Version: 0.99.1
+Version: 2.0.0
 Authors@R: c(
         person("Alex", "White", email = "whiteae@si.edu", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9708-2406")),
         person("Kushal", "Dey", email = "deyk@mskcc.org", role = "aut", comment = c(ORCID = "0000-0002-3520-2345")),
@@ -14,7 +14,7 @@ Description: Provides tools to visualize and analyze structure from a site-speci
     count matrices from a local site-species abundance data and available 
     shapefiles. Additionally, has functions to view how grades of membership or 
     any feature of the site varies with the relative distance profile of the sites 
-    and ordering of sites (by some metadata- say elevation).
+    and ordering of sites (by some metadata - say elevation).
 Depends:
     R (>= 3.4.0),
     ggplot2 (>= 2.1.0)
@@ -47,6 +47,6 @@ Suggests:
     knitr, BiocStyle, Biobase, roxygen2, RColorBrewer, devtools, xtable, Rcpp
 VignetteBuilder: knitr
 biocViews: Software, Visualization, Ecology
-Remotes: kkdey/methClust, kkdey/CountClust
+Remotes: kkdey/methClust, kkdey/CountClust, stephenslab/fastTopics
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
