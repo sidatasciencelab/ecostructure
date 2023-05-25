@@ -19,24 +19,6 @@ bibentry(bibtype = "Article",
                  "on community structure across the tropical-temperate divide."
                  "Nature Communications. 10(1), 2646, doi:10.1038/s41467-019-10253-6"))
 
-bibentry(bibtype = "Article",
-  title   = paste("Non-negative matrix factorization algorithms greatly",
-                  "improve topic model fits"),
-  author  = c(person("Peter Carbonetto"),
-              person("Abhishek Sarkar"),
-              person("Zihao Wang"),
-              person("Matthew Stephens")),
-  journal = "arXiv",
-  volume  = "2105.13440",
-  eprint  = "2105.13440",
-  year    = "2021",
-  archivePrefix = "arXiv",
-  url = "https://arxiv.org/abs/2105.13440",
-  textVersion = paste("Peter Carbonetto, Abhishek Sarkar, Zihao Wang",
-                      "and Matthew Stephens (2021). Non-negative matrix",
-                      "factorization algorithms greatly improve topic model",
-                      "fits. arXiv 2105.13440."))
-
 bibentry(header = "If de_analysis is used, please also cite:",
   bibtype = "Article",
   title = paste("Interpreting structure in sequence count data with",

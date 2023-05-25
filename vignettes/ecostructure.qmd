@@ -23,11 +23,11 @@ knitr::opts_chunk$set(dpi = 90,dev = "png")
 
 # Introduction
 
-**ecostructure** is an R package for clustering and visualizing structure in ecological assemblages using Mixed Membership or Grade of Membership (GoM) models (see [reference](https://www.stat.washington.edu/sites/default/files/files/reports/2006/tr492.pdf): -@erosheva2006latent). The package can incorporate ecological census data of many kinds - your data may reflect anything from species abundances in local communities (e.g., classical community ecology; -@white2019regional) to the presence and absence of species across continents (e.g., macroecology and biogeography; -@white2019regional,@white2021dispersal,@li2021grade,@rana2022key).
+**ecostructure** is an R package for clustering and visualizing structure in ecological assemblages using Mixed Membership or Grade of Membership (GoM) models (see [reference](https://www.stat.washington.edu/sites/default/files/files/reports/2006/tr492.pdf): -@erosheva2006latent). The package will analyze ecological census data of many kinds - your data may reflect anything from species abundances in local communities (e.g., classical community ecology; -@white2019regional) to the presence and absence of species across continents (e.g., macroecology and biogeography; -@white2019regional,@white2021dispersal,@li2021grade,@rana2022key).
 
-To further parse biological structure in the data, **ecostructure** allows phylogenetic, geographic, and morphological data to be incorporated in the clustering framework, producing clusters that represent variation among these axes of diversity when taking the similarity of species into account. In this framework, we call the clusters *motifs*.
+To parse biological structure in the data beyond mere species lists, **ecostructure** allows phylogenetic, geographic, and morphological data to be incorporated in the clustering framework, producing clusters that account for the similarity of species and therefore allow comparisons of structure according to variation along different axes of diversity. In this framework, we call the clusters *motifs*.
 
-This tutorial focuses on an analysis of bird species assemblages across the globe and how those assemblages converge locally in communities in the Himalayas (-@white2019regional). We showcase the use of the **ecostructure** tools and methods to assess the turnover of species across assemblages and communities, and we illustrate that turnover with visualizations.
+This tutorial focuses on an analysis of bird species assemblages across the globe and how those assemblages converge locally in communities in the Himalayas (-@white2019regional). We showcase the use of the **ecostructure** to assess the turnover of species across assemblages and communities, and we illustrate that turnover with visualizations.
 
 The main contributions of the **ecostructure** package are as follows:
 
@@ -35,7 +35,7 @@ The main contributions of the **ecostructure** package are as follows:
 
 -   New methods for visualizing the structure of species assemblages (e.g., communities or continental biotas), leveraging the output from the appropriate GoM model.
 
--   Tools to process species level data using a phylogeny, a trait dataset, or a GIS dataset in order to examine the contribution of history, function, and geography to species level structure.
+-   Tools to process species level data using a phylogeny, a trait dataset, or a GIS dataset in order to examine the contribution of phylogenetic history, function, and geography to the species level structure.
 
 The analytical framework provided by **ecostructure** was first employed in our accompanying 2019 paper (-@white2019regional). That analysis leverages a census of bird species abundances at 38 local sites across the elevations in the eastern and western Himalaya. We provide those data as part of this package.
 
@@ -71,7 +71,7 @@ Also, be sure to cite to the specific [Zenodo DOI](##ZenodoLink) for the package
 
 **ecostructure** requires core geospatial libraries supporting the use of GIS data in R - GDAL ($>= 2.0.1$), GEOS ($>= 3.4.0$), and PROJ.4 ($>= 4.8.0$). Typically these libraries get automatically installed as part of the dependency packages to **ecostructure**.
 
-**ecostructure** requires access to the "gfortran" library. Mac OS X users may encounter the error "library not found for -lgfortran" when installing. To fix this error, please follow the instructions at this [link](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/).
+**ecostructure** requires access to the "gfortran" library. Mac OS X users may encounter the error "library not found for -lgfortran" when installing. To fix this error, please follow the instructions at this [link](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/). Apple Silicon users should instead follow the directions found [here](https://github.com/bioinfoDZ/RISC/issues/10). 
 
 ## R requirements
 
@@ -83,26 +83,16 @@ To install **ecostructure**, first install the package dependencies.
 install.packages(devtools)
 install.packages("sf")
 devtools::install_github("kkdey/methClust")
-devtools::install_github("kkdey/maptpx"). # this is an updated version of CRAN package maptpx
+devtools::install_github("kkdey/maptpx") # this is an updated version of CRAN package maptpx
 devtools::install_github("kkdey/CountClust")
 devtools::install_github("sidatsciencelab/ecostructure")
 ```
-
-**ecostructure** requires access to the "gfortran" library. Mac OS X
-users may encounter the error "library not found for -lgfortran" when
-installing. To fix this error, please follow the instructions at this
-[link](https://thecoatlessprofessor.com/programming/rcpp-rcpparmadillo-and-os-x-mavericks--lgfortran-and--lquadmath-error/). Apple Silicon users should instead follow the directions found [here](https://github.com/bioinfoDZ/RISC/issues/10). 
 
 Then load **ecostructure**
 
 ```{r warning=FALSE, message=FALSE}
 library(ecostructure)
-```
-
-Finally, load the **ecostructure** package.
-
-```{r warning=FALSE, message=FALSE}
-library(ecostructure)
+set.seed(1)
 ```
 
 A comprehensive list of all the functions in the **ecostructure** package can be found by running the following command.
@@ -113,36 +103,33 @@ help(package = "ecostructure")
 
 # Himalayan Bird Surveys
 
-We present the abundances of birds in 38 five ha forest patches across elevations in both the eastern and western Himalayas, together with the site metadata. There are 304 species in the dataset, and species morphological trait data (species means) are also presented along with a time-calibrated phylogeny of those species. For methods related to measuring traits and building the phylogeny, see this [paper](https://www.nature.com/articles/nature13272) for details).
+We present the abundances of birds in 38 five ha forest patches across elevations in both the eastern and western Himalayas, together with site metadata. There are 304 species in the dataset, and species morphological measurements (species means) are also presented along with a time-calibrated phylogeny representing evolutionary relationships of those species. For detailed methods related to measuring traits and building the phylogeny, see -@white2019regional).
 
-The data is saved as an ExpressionSet object and can be read as follows
+The *species abundances* are saved as a matrix object and can be read as follows:
 
 ```{r}
-data("himalayan_birds")
+data("him_birds_cn")
+species_counts <- him_birds_cn
+species_counts[1:10,1:5]
 ```
 
-One can extract the *species abundance matrix* as follows
+The *site metadata* for the Himalayan sites - describing elevation, east/west, latitude, and longitude - is a `data.frame` object and can be read as follows:
 
 ```{r}
-species_counts <- t(exprs(himalayan_birds))
-t(species_counts)[1:10,1:5]
-```
-
-The *site metadata* for the Himalayan sites - describing elevation, east/west, latitude, and longitude - can be extracted as follows.
-
-```{r}
-site_metadata <- pData(phenoData(himalayan_birds))
+data("him_grids_md")
+site_metadata <- him_grids_md
 head(site_metadata)
 ```
 
-Finally, the *species metadata*, comprising the means of the bill traits, wing size, tarsus and mass of each species, can be read as follows
+Finally, the *species metadata*, comprising the means of the bill morphology, wing size, tarsus and mass of each species, can be read as follows:
 
 ```{r}
-species_metadata <- pData(featureData(himalayan_birds))
-head(species_metadata, 4)
+data("him_birds_md")
+species_metadata <- him_birds_md
+head(species_metadata)
 ```
 
-Besides the survey data, **ecostructure** also provides the presence absence matrix for all breeding birds in southeast Asia, encompassing the region of the survey sites in the above data. This data has been prepared from publicly available shapefiles (.shp) from [BirdLife International](http://www.birdlife.org/).
+Besides the survey data, **ecostructure** also provides a presence absence matrix for all breeding birds in southeast Asia, encompassing the region of the survey sites in the above data. This data has been prepared from publicly available shapefiles (.shp) from [BirdLife International](http://www.birdlife.org/).
 
 ```{r}
 data("indian_birds_pa")
@@ -157,8 +144,13 @@ The `ecos_fit` function fits Grade of Membership models either on binary presenc
 We use `ecos_fit` to evaluate structure in our Himalayan birds dataset. These data are counts of species in sites, and so the function fits a Multinomial model to generate *species abundance motifs*. The data structure (abundance or presence/absence) is evaluated by the function automatically.
 
 ```{r message=FALSE, warning=FALSE}
-set.seed(1000)
-fit <- ecos_fit(species_counts, K = 2, tol = 0.1, num_trials = 10)
+fit <- ecos_fit(species_counts, K = 2)
+```
+
+```{r message=FALSE, warning=FALSE}
+fit <- ecos_fit_dev(species_counts, K = 2, sparse = T,
+                    num_iter_main = 1000, 
+                    num_iter_refine = 1000)
 ```
 
 The function outputs a lower rank representation of the data in `species_counts`, according to the value of K chosen by the user. Above, we chose to examine the primary partition of the data into 2 motifs by setting `K` = 2. Increasing `num_trials` will run more burn-in trials for the model fit, and decreasing `tol` will make the underlying algorithm run longer before convergence. These may need to be modified if the input data matrix is small.
@@ -177,8 +169,9 @@ We can take the output from the model fit and visualize the motif contributions 
 east_west_dir <- factor(site_metadata$WorE, levels = c("W", "E"))
 elevation_metadata <- site_metadata$Elevation
 ecos_blocks(fit$omega,
-                    blocker_metadata = east_west_dir,
-                    order_metadata = elevation_metadata)
+  blocker_metadata = east_west_dir,
+  order_metadata = elevation_metadata
+)
 ```
 
 Because we are interested in species turnover across elevational and geographic locations, we block the two elevational gradients (western or eastern) and plot them side by side.
@@ -218,22 +211,14 @@ We again use `ecos_fit` to fit Grade of Membership models on binary presence-abs
 
 ```{r echo=TRUE, eval=FALSE}
 data("indian_birds_pa")
-pres_ab_fit <- ecos_fit(indian_birds_pa, K = 2, tol = 0.1)
+pres_ab_fit <- ecos_fit_dev(as.matrix(indian_birds_pa), K = 2)
 ```
-
-The above code takes around 4 minutes to run on a single machine.
 
 Again, the function outputs a lower (specified by K) rank representation of the data `indian_birds_pa`. The output `pres_ab_fit` consists of `omega` and `theta` components and these matrices can be understood as:
 
 -   `omega` : A site $\times$ K matrix, K representing the number of clusters or species motifs. The row sums equal 1 and the entries are positive. These represent the contribution of the different motifs to the species composition of each location.
 
 -   `theta` : A species $\times$ K matrix, where each species has a probability of being found in the kth motif. These probabilities are *not* constrained to sum to 1 as in the multinomial case we illustrated earlier.
-
-We have an example model fit of the above function run as part of the **ecostructure** package.
-
-```{r}
-data("pres_ab_fit")
-```
 
 ### Vizualing species motif contributions
 
@@ -243,12 +228,11 @@ We can take the output from the model fit and again visualize the membership pro
 ecos_plot_pie(omega = pres_ab_fit$omega,
                       lat_lim = c(5,50),
                       long_lim = c(55,120),
-                      path = "geostructure_plot.png",
-                      color= c("red","blue"))
+                      path = "geostructure_plot.png")
 
 ```
 
-This function will create a file `geostructure_plot.png` in the current folder (`getwd()` in R to figure out).
+This function will create a file `geostructure_plot.png` in the current folder (`getwd()` in R to examine where your .png file is saved).
 
 ![](geostructure_plot.png)
 
@@ -256,14 +240,13 @@ One can easily apply this to any region of interest. We provide an example of vi
 
 ```{r echo=TRUE, eval=FALSE}
 data("australia_birds")
-australia_model <- ecos_fit(australia_birds$pr_ab_data, 
-                            K=6, tol = 0.1)
+australia_model <- ecos_fit_dev(as.matrix(australia_birds$pr_ab_data), K=6)
 ```
 
 The results from this fit, which takes \< 2 minutes, are saved as `australia_model` and can be visualized as follows
 
 ```{r message=FALSE, warning=FALSE}
-data("australia_model")
+#data("australia_model")
 ecos_plot_pie(omega = australia_model$omega,
               coords = australia_birds$latlong, 
               long_lim = c(110,160),
@@ -317,9 +300,11 @@ We can generate maps for all of the disperison fields using the function `dsp_pl
 
 ```{r}
 data("dispersion_field_ex")
-dsp_plots <- dsp_plot_map(dispersion_field_ex, 
-                    raster_latlim = c(5, 50), raster_longlim = c(50, 120), 
-                    scale = "percentage")
+dsp_plots <- dsp_plot_map(dispersion_field_ex,
+  raster_latlim = c(5, 50), 
+  raster_longlim = c(50, 120),
+  scale = "percentage"
+)
 dsp_plots[[1]]
 ```
 
@@ -428,12 +413,18 @@ One may request the BirdLife dataset from [here](http://datazone.birdlife.org/sp
 
 Users may also look to other packages that specifically focus on generating presence absence data from GIS data types. [letsR](https://cran.r-project.org/web/packages/letsR/letsR.pdf) is an incredibly useful package to this end. Presence-absence matrices from **letsR** can certainly be used in tandem with the **ecostructure** functions. Our goal is to contribute to that body of work by creating a tool that employs the speed and utility of the packages [sf](https://cran.r-project.org/web/packages/sf/index.html) and [fasterize](https://cran.r-project.org/web/packages/fasterize/index.html) (see [velox](https://cran.r-project.org/web/packages/velox/velox.pdf) as well).
 
-# Developers
+### Authors 
+ 
+- [Alex White](https://sidatasciencelab.github.io/people/leads/alex.html)
+- [Kushal K Dey](https://www.deylab.net/)
+- [Matthew Stephens](http://stephenslab.uchicago.edu/)
+- [Trevor Price](https://pondside.uchicago.edu/ecol-evol/people/price.html)
 
-**ecostructure** has been developed by [Kushal K Dey](https://kkdey.github.io) and [Alexander E White](http://www.alexwhitebiology.com/), in the labs of [Matthew Stephens](http://stephenslab.uchicago.edu/) and [Trevor Price](https://pondside.uchicago.edu/ecol-evol/people/price.html) labs at the University of Chicago.
+### Questions?
 
-The local Himalayan bird surveys were conducted by Trevor Price and Dhananjai Mohan.
+For any queries or concerns related to the software, you can open an issue [here](https://github.com/sidatasciencelab/ecostructure/issues) or contact A. White directly. 
 
-For any queries or concerns related to the software, you can open an issue [here](https://github.com/kkdey/ecostructure/issues).
+The methods used to develop this framework have advanced since our initial release and may yet evolve in future iterations of this package. The Smithsonian Data Science Lab continues to collaborate with the Dey Lab (Sloan Kettering), the Price Lab (U Chicago) and the Stephens Lab (U Chicago) to develop this work.
 
-Or you can contact us directly: Kushal K Dey - *kshldey\@gmail.com* or Alex White - *aewhite100\@gmail.com*.
+You are welcome to contribute to **ecostructure** by forking this repo.
+

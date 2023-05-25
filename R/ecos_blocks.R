@@ -106,7 +106,7 @@ ecos_blocks = function(omega,
       tissue_label = factor(order_split_ordered,
                             levels = unique(order_split_ordered) ) );
 
-    split_struct[[l]] <- CountClust::StructureGGplot(omega = omega_split_ordered,
+    split_struct[[l]] <- StructureGGplot(omega = omega_split_ordered,
                           annotation = annotation,
                           figure_title = names(split_indices)[l],
                           palette = palette,

@@ -35,7 +35,7 @@ ecos_fit_binomial_topic_model <- function(X,
     if (verbose != "none") {
       cat("Refining binomial model fit with EM updates.\n")
     }
-    fit_binom_em <- poisson2binom(X, fit_pois, numem = numiter.refine)
+    fit_binom_em <- poisson2binom(X, fit_pois, numem = numiter.refine, verbose = FALSE)
   }
   return(fit_binom_em)
 }

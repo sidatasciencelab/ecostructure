@@ -1,3 +1,37 @@
+#' @title Fitting Grade of Membership model for clustering into communities
+#'
+#' @description A grade of membership model for clustering a site by features
+#' data - which could be presence-absence or counts abundance data of species
+#' in the sites.
+#'
+#' @param dat input data matrix of samples along rows and features along sites,
+#'            with each entry a 0/1 signifying presence/absence or counts of
+#'            abundances.
+#' @param K The number of clusters to fit
+#' @param tol The tolerance level of the model.
+#' @param num_trials Number of EM runs from different starting points. This is'
+#'                   key for picking the best fit model across multiple runs.
+#' @param fit_control The control parameters for the model.
+#'
+#' @return Returns a model fit with \code{omega} as cluster membership
+#'         probabilities and \code{theta} as cluster feature matrix.
+#'
+#' @importFrom maptpx topics
+#' @importFrom methClust meth_topics
+#'
+#' @examples
+#'
+#' data("himalayan_birds")
+#' species_abundance_counts <- t(exprs(himalayan_birds))
+#' fit <- ecostructure_fit(species_abundance_counts, K = 2, tol = 0.1)
+#' species_pa_counts <- species_abundance_counts
+#' species_pa_counts[species_pa_counts >= 1] <- 1
+#' fi2 <- ecos_fit(species_pa_counts, K = 2, tol = 0.1)
+#'
+#' @export
+
+
+
 ecos_fit_dev <- function(dat,
                          max_dat = NULL,
                          K,
@@ -44,7 +78,7 @@ ecos_fit_dev <- function(dat,
           k = K,
           numiter.main = num_iter_main,
           numiter.refine = num_iter_refine,
-          control.init = fit_control_refine,
+          control.init = fit_control_init,
           control.main = fit_control_main,
           control.refine = fit_control_refine
         )
