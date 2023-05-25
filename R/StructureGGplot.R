@@ -1,4 +1,6 @@
 #' Struture plot using ggplot2
+#' 
+#' modified from CountClust (https://github.com/kkdey/CountClust/blob/master/R/StructureGGplot.R)
 #'
 #' Make the traditional Structure plot of GoM model with ggplot2
 #'
