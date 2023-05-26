@@ -13,14 +13,14 @@ ecos_fit_binomial_topic_model <- function(X,
                                           )) {
   verify.count.matrix(X)
   verbose <- match.arg(verbose)
-  if (any.allzero.cols(X)) {
-    X <- remove.allzero.cols(X)
-    warning(sprintf(paste(
-      "One or more columns of X are all zero; after",
-      "removing all-zero columns, %d columns will be",
-      "used for model fitting"
-    ), ncol(X)))
-  }
+  #if (any.allzero.cols(X)) {
+  #  X <- remove.allzero.cols(X)
+  #  warning(sprintf(paste(
+  #    "One or more columns of X are all zero; after",
+  #    "removing all-zero columns, %d columns will be",
+  #    "used for model fitting"
+  #  ), ncol(X)))
+  #}
   fit_pois <- fastTopics::init_poisson_nmf(X,
     k = k, init.method = init.method,
     control = control.init,

@@ -137,11 +137,11 @@ data("indian_birds_pa")
 
 # Model fitting and Visualizations
 
-The `ecos_fit` function fits Grade of Membership models either on binary presence-absence data or species abundance counts data. We illustrate each case below.
+The `ecos_fit` function fits the Grade of Membership model. The first version of this function took advantage of the package `CountClust` (-@key2017viz) to fit the model. We have replaced this functionality with `CountClust`'s successor `fastTopics`(-@carbonetto2021nnmf). As before, we can fit models either on binary presence-absence data or species abundance counts data, but with `fastTopics` we can now fit models much faster. We illustrate each case below. 
 
 ## Species abundance data
 
-We use `ecos_fit` to evaluate structure in our Himalayan birds dataset. These data are counts of species in sites, and so the function fits a Multinomial model to generate *species abundance motifs*. The data structure (abundance or presence/absence) is evaluated by the function automatically.
+We use `ecos_fit` to evaluate structure in the Himalayan birds dataset. These data are counts of species in sites, and so the function fits a Multinomial model to generate *species abundance motifs*. The data structure (abundance or presence/absence) is evaluated by the function automatically.
 
 ```{r message=FALSE, warning=FALSE}
 fit <- ecos_fit(species_counts, K = 2)
@@ -153,7 +153,7 @@ fit <- ecos_fit_dev(species_counts, K = 2, sparse = T,
                     num_iter_refine = 1000)
 ```
 
-The function outputs a lower rank representation of the data in `species_counts`, according to the value of K chosen by the user. Above, we chose to examine the primary partition of the data into 2 motifs by setting `K` = 2. Increasing `num_trials` will run more burn-in trials for the model fit, and decreasing `tol` will make the underlying algorithm run longer before convergence. These may need to be modified if the input data matrix is small.
+The function outputs a lower rank representation of the data in `species_counts`, according to the value of K chosen by the user. Above, we chose to examine the primary partition of the data into 2 motifs by setting `K` = 2. The method in `fastTopics` takes advantage of a two step model fit, and `num_iter_main` and `num_inte_refine` can each be modified to control the length of time the underlying algorithm will run before convergence during each step. These may need to be modified if the input data matrix is large. The input data matrix can be transformed to a `sparse.matrix` object if `sparse == T` - this is useful if the matrix contains mostly 0 abundances/absences and compute times are burdensome.  
 
 The main components of the output from `ecos_fit` are:
 
@@ -184,12 +184,12 @@ See `ecos_plot_pie` below to plot the data in a spatially explicit context (i.e.
 
 A central component of this framework is assessing the species contributions to each motif. One may be tempted to merely examine the `theta` matrix component of the model fit, and identify the the species that differentially drive the clustering.
 
-We use the function `ExtractTopFeatures` from the R package [CountClust](http://bioconductor.org/packages/release/bioc/html/CountClust.html) to compute and record the top contributing species to each species abundance motif.
+We use the function `ExtractTopFeatures`, supplied from the R package [CountClust](https://github.com/kkdey/CountClust/blob/master/R/ExtractTopFeatures.R), to compute and record the top contributing species to each species abundance motif.
 
 ```{r}
-features <- CountClust::ExtractTopFeatures(fit$theta, top_features = 5,
+top_species <- ExtractTopFeatures(fit$theta, top_features = 5,
                                            method = "poisson", options = "max")
-t(apply(features$indices, c(1,2), function(x) return(rownames(fit$theta)[x])))
+t(apply(top_species$indices, c(1,2), function(x) return(rownames(fit$theta)[x])))
 ```
 
 ### Comparing observed fit to null expectation
@@ -333,14 +333,17 @@ As these data are counts, we can now fit a multinomial GoM (using to examine *ge
 The model fit is done using `ecos_fit` as above. Because this geographic data matrix may be particularly large, depending on the resolution chosen to produce the dispersion fields, the fit may take longer than the fit on the original data matrix.
 
 ```{r, eval = F}
-fit <- ecos_fit(dsp_fields_matrix, K = 2, tol = 0.1, num_trials = 10)
+#fit <- ecos_fit(dsp_fields_matrix, K = 2, tol = 0.1, num_trials = 10)
+fit <- ecos_fit_dev(dsp_fields_matrix, K = 2, sparse = F,
+                    num_iter_main = 100, 
+                    num_iter_refine = 100)
 ```
 
 We can plot the theta distributions of each geographical motif using the function `dsp_motif`. We provide an example theta matrix with the package called `example_theta`.
 
 ```{r}
-data("example_theta")
-himalayan_geo_motifs <- dsp_motif(example_theta, 
+#data("example_theta")
+himalayan_geo_motifs <- dsp_motif(fit$theta, 
                                   color_ramp = c("black", "darkseagreen3",
                                                  "orange","red"),
                                   dsp_fld_res = 8)
