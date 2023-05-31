@@ -148,9 +148,9 @@ fit <- ecos_fit(species_counts, K = 2)
 ```
 
 ```{r message=FALSE, warning=FALSE}
-fit <- ecos_fit_dev(species_counts, K = 2, sparse = T,
-                    num_iter_main = 1000, 
-                    num_iter_refine = 1000)
+fit <- ecos_fit_dev(species_counts, K = 2, sparse = F,
+                    num_iter_main = 100, 
+                    num_iter_refine = 100)
 ```
 
 The function outputs a lower rank representation of the data in `species_counts`, according to the value of K chosen by the user. Above, we chose to examine the primary partition of the data into 2 motifs by setting `K` = 2. The method in `fastTopics` takes advantage of a two step model fit, and `num_iter_main` and `num_inte_refine` can each be modified to control the length of time the underlying algorithm will run before convergence during each step. These may need to be modified if the input data matrix is large. The input data matrix can be transformed to a `sparse.matrix` object if `sparse == T` - this is useful if the matrix contains mostly 0 abundances/absences and compute times are burdensome.  
@@ -348,6 +348,7 @@ himalayan_geo_motifs <- dsp_motif(fit$theta,
                                                  "orange","red"),
                                   dsp_fld_res = 8)
 himalayan_geo_motifs$motif_maps[[1]]
+himalayan_geo_motifs$motif_maps[[2]]
 ```
 
 We call this color palette the *Ghostbusters theme* !! :)
