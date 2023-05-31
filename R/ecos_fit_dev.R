@@ -116,7 +116,14 @@ ecos_fit_dev <- function(dat,
         control.refine = fit_control_refine
       )
     )
-
+    if (any.allzero.cols(dat)) {
+      topic_clus$F <- addback.allzero.cols(X = dat, K = K, Z = topic_clus$F)
+      warning(sprintf(paste(
+        "One or more columns of X are all zero; Columns that", 
+        "were removed from the model fit are being added back",
+        "to the theta matrix with zero values for each motif k."
+        )))
+    }
     ll <- list(
       "omega" = topic_clus$L,
       "theta" = topic_clus$F,

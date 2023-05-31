@@ -13,14 +13,14 @@ ecos_fit_binomial_topic_model <- function(X,
                                           )) {
   verify.count.matrix(X)
   verbose <- match.arg(verbose)
-  #if (any.allzero.cols(X)) {
-  #  X <- remove.allzero.cols(X)
-  #  warning(sprintf(paste(
-  #    "One or more columns of X are all zero; after",
-  #    "removing all-zero columns, %d columns will be",
-  #    "used for model fitting"
-  #  ), ncol(X)))
-  #}
+  if (any.allzero.cols(X)) {
+    X <- remove.allzero.cols(X)
+    warning(sprintf(paste(
+      "One or more columns of X are all zero; after",
+      "removing all-zero columns, %d columns will be",
+      "used for model fitting"
+    ), ncol(X)))
+  }
   fit_pois <- fastTopics::init_poisson_nmf(X,
     k = k, init.method = init.method,
     control = control.init,
@@ -39,3 +39,27 @@ ecos_fit_binomial_topic_model <- function(X,
   }
   return(fit_binom_em)
 }
+
+#' @importFrom Matrix colSums
+any.allzero.cols <- function (X)
+  any(colSums(X > 0) == 0)
+
+# Filter out all-zero columns from the matrix.
+#
+#' @importFrom Matrix colSums
+remove.allzero.cols <- function (X)
+  X[,colSums(X > 0) >= 1]
+
+# Add back all-zero columns to the theta matrix.
+#
+#' @importFrom Matrix colSums
+addback.allzero.cols <- function(X, K, Z){
+  ind <- c(1:dim(X)[2])[colSums(X > 0) >= 1]
+  theta <- matrix(data = NA, nrow = dim(X)[2], ncol = 2) 
+  theta[,] <- c(0,0)
+  theta[ind,] <- Z
+  return(theta)
+}
+  
+  
+
