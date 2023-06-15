@@ -80,18 +80,19 @@ Also, be sure to cite to the specific [Zenodo DOI](##ZenodoLink) for the package
 To install **ecostructure**, first install the package dependencies.
 
 ```{r warning=FALSE, message=FALSE}
-install.packages(devtools)
-install.packages("sf")
-devtools::install_github("kkdey/methClust")
-devtools::install_github("kkdey/maptpx") # this is an updated version of CRAN package maptpx
-devtools::install_github("kkdey/CountClust")
-devtools::install_github("sidatsciencelab/ecostructure")
+#install.packages(devtools)
+#install.packages("sf")
+#devtools::install_github("kkdey/methClust")
+#devtools::install_github("kkdey/maptpx") # this is an updated version of CRAN package maptpx
+#devtools::install_github("kkdey/CountClust")
+devtools::install_github("sidatasciencelab/ecostructure")
 ```
 
 Then load **ecostructure**
 
 ```{r warning=FALSE, message=FALSE}
 library(ecostructure)
+library(fastTopics)
 set.seed(1)
 ```
 
@@ -144,16 +145,16 @@ The `ecos_fit` function fits the Grade of Membership model. The first version of
 We use `ecos_fit` to evaluate structure in the Himalayan birds dataset. These data are counts of species in sites, and so the function fits a Multinomial model to generate *species abundance motifs*. The data structure (abundance or presence/absence) is evaluated by the function automatically.
 
 ```{r message=FALSE, warning=FALSE}
-fit <- ecos_fit(species_counts, K = 2)
+#fit <- ecos_fit(species_counts, K = 2)
 ```
 
 ```{r message=FALSE, warning=FALSE}
 fit <- ecos_fit_dev(species_counts, K = 2, sparse = F,
-                    num_iter_main = 100, 
-                    num_iter_refine = 100)
+                    num_iter_main = 1000, 
+                    num_iter_refine = 1000)
 ```
 
-The function outputs a lower rank representation of the data in `species_counts`, according to the value of K chosen by the user. Above, we chose to examine the primary partition of the data into 2 motifs by setting `K` = 2. The method in `fastTopics` takes advantage of a two step model fit, and `num_iter_main` and `num_inte_refine` can each be modified to control the length of time the underlying algorithm will run before convergence during each step. These may need to be modified if the input data matrix is large. The input data matrix can be transformed to a `sparse.matrix` object if `sparse == T` - this is useful if the matrix contains mostly 0 abundances/absences and compute times are burdensome.  
+The function outputs a lower rank representation of the data in `species_counts`, according to the value of K chosen by the user. Above, we chose to examine the primary partition of the data into 2 motifs by setting `K` = 2. The method in `fastTopics` takes advantage of a two step model fit, and `num_iter_main` and `num_inte_refine` can each be modified to control the number of iterations the underlying algorithm will run before convergence during each step. These may need to be modified if the input data matrix is large. The input data matrix can be transformed to a `sparse.matrix` object if `sparse == T` - this is useful if the matrix contains mostly 0 abundances/absences and compute times are burdensome.  
 
 The main components of the output from `ecos_fit` are:
 
@@ -184,7 +185,7 @@ See `ecos_plot_pie` below to plot the data in a spatially explicit context (i.e.
 
 A central component of this framework is assessing the species contributions to each motif. One may be tempted to merely examine the `theta` matrix component of the model fit, and identify the the species that differentially drive the clustering.
 
-We use the function `ExtractTopFeatures`, supplied from the R package [CountClust](https://github.com/kkdey/CountClust/blob/master/R/ExtractTopFeatures.R), to compute and record the top contributing species to each species abundance motif.
+We use the function `ExtractTopFeatures`, supplied by `ecostructure` but originally from the R package [CountClust](https://github.com/kkdey/CountClust/blob/master/R/ExtractTopFeatures.R), to compute and record the top contributing species to each species abundance motif.
 
 ```{r}
 top_species <- ExtractTopFeatures(fit$theta, top_features = 5,
@@ -211,6 +212,9 @@ We again use `ecos_fit` to fit Grade of Membership models on binary presence-abs
 
 ```{r echo=TRUE, eval=FALSE}
 data("indian_birds_pa")
+```
+
+```{r echo=TRUE, eval=FALSE}
 pres_ab_fit <- ecos_fit_dev(as.matrix(indian_birds_pa), K = 2)
 ```
 
@@ -243,10 +247,10 @@ data("australia_birds")
 australia_model <- ecos_fit_dev(as.matrix(australia_birds$pr_ab_data), K=6)
 ```
 
+
 The results from this fit, which takes \< 2 minutes, are saved as `australia_model` and can be visualized as follows
 
 ```{r message=FALSE, warning=FALSE}
-#data("australia_model")
 ecos_plot_pie(omega = australia_model$omega,
               coords = australia_birds$latlong, 
               long_lim = c(110,160),
@@ -392,20 +396,21 @@ We provide a function `dsp_create_from_gdb` that creates a presence absence matr
 
 ## say we call one such gdb - example_birdlife.gdb
 
-gdb_global_birds <- st_read("/Users/alex/projects/BL_geodatabase/BOTW_2022_2/BOTW.gdb")
+# gdb_global_birds <- st_read("/Users/alex/projects/BL_geodatabase/BOTW_2022_2/BOTW.gdb")
 
 ## Then run the following commands to generate the presence absence matrix
 ```
 
 ```{r}
-recast_geom <- st_geometry(gdb_global_birds[st_geometry_type(gdb_global_birds) %in% c("MULTISURFACE"),]) 
-recast_index <- as.numeric(rownames(gdb_global_birds[st_geometry_type(gdb_global_birds) %in% c("MULTISURFACE"),]))
-for (i in 1:length(recast_index)){
-  st_geometry(gdb_global_birds)[[recast_index[[i]]]] <- st_cast(recast_geom[[i]], "MULTIPOLYGON")
-}
+#recast_geom <- st_geometry(gdb_global_birds[st_geometry_type(gdb_global_birds) %in% c("MULTISURFACE"),]) 
+#recast_index <- as.numeric(rownames(gdb_global_birds[st_geometry_type(gdb_global_birds) %in% c("MULTISURFACE"),]))
+#for (i in 1:length(recast_index)){
+#  st_geometry(gdb_global_birds)[[recast_index[[i]]]] <- st_cast(recast_geom[[i]], "MULTIPOLYGON")
+#}
 ```
 
 With the birds of the world dataset, we focus on the presence of species in known localities and areas of potential and likely extinction after 1500 AD. This allows us to study evolutionary patterns without worrying that human induced extinctions bias the data. We filter the data to include presences where the species is either native or reintroduced to a historically native range, and where the species is resident or breeding.  
+
 ```{r}
 gdb_filter <- gdb_global_birds %>% 
   filter(presence == 1 | presence == 4 | presence == 5) %>% 
