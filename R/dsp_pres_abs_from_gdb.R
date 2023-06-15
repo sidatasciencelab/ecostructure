@@ -41,7 +41,7 @@
 #' @export
 
 
-dsp_create_from_gdb = function(gdb_object,
+dsp_pres_abs_from_gdb = function(gdb_object,
                                raster_resolution = 5,
                                thresh = 4,
                                raster_latlim = c(-90,90),
@@ -96,12 +96,12 @@ dsp_create_from_gdb = function(gdb_object,
         next
       }
     }
-
+    
     r_sfs <- fasterize::fasterize(breedingranges, r_prim,
                                   fun = "any", by = "ecos_temp_name", background = 0)
     
     r_sfs_ag[[i]] <- raster::aggregate(r_sfs, fact = (1/precision) * 
-                                       raster_resolution, fun = max, expand = F)
+                                         raster_resolution, fun = max, expand = F)
     
     sp_include[i] <- any(as.matrix(r_sfs_ag[[i]]) > 0)
     
@@ -124,44 +124,9 @@ dsp_create_from_gdb = function(gdb_object,
   
   rownames(pres_ab) <- rw_nms
   
-  overlps_sp <- apply(pres_ab, 2, function (x) which(x == 1))
-  overlps_cell <- apply(pres_ab, 1, function (x) which(x == 1))
+  pres_ab_list <- list(raster = r_sfs_ag,
+                       pres_ab = pres_ab)
   
-  cells_with_overlap <- which(unlist(lapply(overlps_cell, any)))
-  focal_LL <- idx[cells_with_overlap]
-  cells_with_asblg <- which(unlist(lapply(overlps_cell, function(x) length(x) > thresh)))
-  focal_asblg_LL <- idx[cells_with_asblg]
-  
-  dispersion.field.raster <- list()
-  dispersion.field.matrix <- list()
-  
-  lat_long_names <- c()
-  
-  cat("\n Generating disersion fields \n")
-  pb <- txtProgressBar()
-  for (i in 1:length(cells_with_asblg)) {
-    dsp_fld <- sum(stack(r_sfs_ag[overlps_cell[cells_with_asblg[i]][[1]]]))
-    setTxtProgressBar(pb, i/length(cells_with_asblg))
-    dsp_fld[dsp_fld == 0] <- NA
-    dispersion.field.raster[[i]] <- dsp_fld
-    dispersion.field.matrix[[i]] <- raster::as.matrix(dsp_fld)
-    lat_long_names[i] <- paste(focal_asblg_LL[[i]][2], 
-                               focal_asblg_LL[[i]][1], 
-                               sep = "_")
-  }
-  
-  names(dispersion.field.matrix) <- lat_long_names
-  names(dispersion.field.raster) <- lat_long_names
-  
-  if(drop){
-    pres_ab <- pres_ab[rowSums(pres_ab) > 0,]
-  }
-  
-  dispersion.field <- list(matrix = dispersion.field.matrix, 
-                           raster = dispersion.field.raster, 
-                           pres_ab = pres_ab)
-  
-  return(dispersion.field)
+  return(pres_ab_list)
 }
-
-
+ 

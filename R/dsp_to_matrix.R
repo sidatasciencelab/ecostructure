@@ -20,15 +20,19 @@
 #'
 #' @export
 
-dsp_to_matrix  = function(dispersion.field)
-{
-  map_data <- vector()
-  for(l in 1:length(dispersion.field)){
-    temp_data <- dispersion.field[[l]];
-    temp_data[is.na(temp_data)] <- 0;
+dsp_to_matrix <- function(dispersion.field) {
+  cat("\n Converting dispersion fields to matrix rows \n")
+  pb <- txtProgressBar()
+  temp_data <- dispersion.field[[1]]
+  temp_data[is.na(temp_data)] <- 0
+  map_data <- matrix(NA, length(dispersion.field), dim(temp_data)[1] * dim(temp_data)[2])
+  for (l in 1:length(dispersion.field)) {
+    temp_data <- dispersion.field[[l]]
+    temp_data[is.na(temp_data)] <- 0
     temp_data_vec <- matrix(as.matrix(temp_data),
-                            ncol=dim(temp_data)[1]*dim(temp_data)[2], byrow=TRUE);
-    map_data <- rbind(map_data, temp_data_vec);
+      ncol = dim(temp_data)[1] * dim(temp_data)[2], byrow = TRUE)
+    map_data[l, ] <- temp_data_vec
+    setTxtProgressBar(pb, l / length(dispersion.field))
   }
   rownames(map_data) <- names(dispersion.field)
   return(map_data)

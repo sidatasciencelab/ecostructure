@@ -55,8 +55,8 @@ remove.allzero.cols <- function (X)
 #' @importFrom Matrix colSums
 addback.allzero.cols <- function(X, K, Z){
   ind <- c(1:dim(X)[2])[colSums(X > 0) >= 1]
-  theta <- matrix(data = NA, nrow = dim(X)[2], ncol = 2) 
-  theta[,] <- c(0,0)
+  theta <- matrix(data = NA, nrow = dim(X)[2], ncol = K) 
+  theta[,] <- rep(0,K)
   theta[ind,] <- Z
   return(theta)
 }

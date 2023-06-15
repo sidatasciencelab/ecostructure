@@ -153,8 +153,8 @@ ecos_plot_pie = function(omega = NULL,
   invisible(lapply(1:dim(omega)[1], function(r)
     do.call(mapplots::add.pie, append(list(
                       z=as.integer(100*omega[r,]),
-                      x=coords[r,1], 
-                      y=coords[r,2], 
+                      x=coords[r,2], 
+                      y=coords[r,1], 
                       labels=c("","",""),
                       radius = radius,
                       col=sapply(color, scales::alpha, intensity))

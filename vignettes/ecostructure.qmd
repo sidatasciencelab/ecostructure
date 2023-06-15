@@ -296,7 +296,7 @@ local_him_disp <- dsp_create_from_survey(local_data = species_counts,
 
 ### Visualizing dispersion fields
 
-We can generate maps for all of the disperison fields using the function `dsp_plot_map`. We provide the dispersion fields for our 38 Himalyan community surveys, `dispersion_field_ex`, as a list of matrices.
+We can generate maps for all of the dispersion fields using the function `dsp_plot_map`. We provide the dispersion fields for our 38 Himalayan community surveys, `dispersion_field_ex`, as a list of matrices.
 
 ```{r}
 data("dispersion_field_ex")
@@ -388,28 +388,116 @@ There are a number of ways to generate species presence absence data to evaluate
 We provide a function `dsp_create_from_gdb` that creates a presence absence matrix using these GIS data types. This function is slow on large datasets. We illustrate how it might be used below on the geodatabase of global bird distrbutions provided by BirdLife International.
 
 ```{r echo=TRUE, eval=FALSE}
-
 ## Request and fetch geodatabase (gdb) from BirdLife International : http://datazone.birdlife.org/species/requestdis or 
 
 ## say we call one such gdb - example_birdlife.gdb
 
-gdb_global_birds <- st_read("example_birdlife.gdb")
+gdb_global_birds <- st_read("/Users/alex/projects/BL_geodatabase/BOTW_2022_2/BOTW.gdb")
 
 ## Then run the following commands to generate the presence absence matrix
+```
 
-disp_from_scratch <- dsp_create_from_gdb(gdb_object = gdb_global_birds,
+```{r}
+recast_geom <- st_geometry(gdb_global_birds[st_geometry_type(gdb_global_birds) %in% c("MULTISURFACE"),]) 
+recast_index <- as.numeric(rownames(gdb_global_birds[st_geometry_type(gdb_global_birds) %in% c("MULTISURFACE"),]))
+for (i in 1:length(recast_index)){
+  st_geometry(gdb_global_birds)[[recast_index[[i]]]] <- st_cast(recast_geom[[i]], "MULTIPOLYGON")
+}
+```
+
+With the birds of the world dataset, we focus on the presence of species in known localities and areas of potential and likely extinction after 1500 AD. This allows us to study evolutionary patterns without worrying that human induced extinctions bias the data. We filter the data to include presences where the species is either native or reintroduced to a historically native range, and where the species is resident or breeding.  
+```{r}
+gdb_filter <- gdb_global_birds %>% 
+  filter(presence == 1 | presence == 4 | presence == 5) %>% 
+  filter(origin == 1 | origin == 2) %>%
+  filter(seasonal == 1 | seasonal == 2)
+```
+
+
+```{r echo=TRUE, eval=FALSE}
+data("hbw_tyrannidae")
+tyrannidae <- hbw_tyrannidea$`Scientific name`
+dsp_from_scratch <- dsp_create_from_gdb(gdb_object = gdb_filter,
                       raster_resolution = 1,thresh = 3,
                       raster_latlim = c(-90,90),
                       raster_longlim = c(-180,180),
-                      species_feature = "SCINAME")
+                      species_feature = "sci_name",
+                      species_name = tyrannidae)
 ```
 
-The presence absence data is output as `disp_from_scratch$pres_ab` on which `ecos_fit` can be run.
+```{r}
+dsp_pres_abs_birds <- dsp_pres_abs_from_gdb(gdb_object = gdb_filter,
+                      raster_resolution = 1,thresh = 3,
+                      raster_latlim = c(-90,90),
+                      raster_longlim = c(-180,180),
+                      species_feature = "sci_name")
+```
+
+```{r}
+disp_from_scratch <- dsp_create_from_pres_abs(
+  pres_ab = dsp_pres_abs_birds$pres_ab,
+  r_sfs_ag = dsp_pres_abs_birds$raster,
+  raster_resolution = 1, thresh = 3,
+  raster_latlim = c(-90, 90),
+  raster_longlim = c(-180, 180),
+  species_feature = "sci_name"
+)
+```
+
+
+The presence absence data is output as `disp_from_scratch$pres_ab`, and we can fit the GoM model using `ecos_fit`.
 
 ```{r echo=TRUE, eval=FALSE}
-fit <- ecos_fit(disp_from_scratch$pres_ab, K = 5, 
-                        tol = 0.1, num_trials = 10)
+pres_abs_tyrannidae <- dsp_from_scratch$pres_ab
+pres_abs_tyrannidae <- pres_abs_tyrannidae[rowSums(pres_abs_tyrannidae > 0) >= 1,]
+fit_tyrannidae <- ecos_fit_dev(as.matrix(pres_abs_tyrannidae), K = 10, sparse=F,num_iter_main = 1000, num_iter_refine = 1000)
 ```
+
+
+```{r echo=TRUE, eval=FALSE}
+ecos_plot_pie(
+  omega = fit_tyrannidae$omega,
+  lat_lim = c(-65, 90),
+  long_lim = c(-180, -25),
+  coastline_lwd = 5,
+  path = "geostructure_plot_tyrannidae.png",
+  image_width = 2000,
+  image_height = 2000
+  )
+```
+![](geostructure_plot_tyrannidae.png)
+
+```{r}
+```
+
+
+```{r}
+dsp_fields_matrix_tyrannidae <- dsp_to_matrix(dsp_from_scratch$raster)
+```
+
+```{r}
+fit_dsp_field_tyrannidae <- ecos_fit_dev(dsp_fields_matrix_tyrannidae, K = 5, sparse = F,
+                    num_iter_main = 100, 
+                    num_iter_refine = 100)
+```
+```{r}
+tyrannidae_geo_motifs <- dsp_motif(fit_dsp_field_tyrannidae$theta,
+  color_ramp = c(
+    "black", "darkseagreen3",
+    "orange", "red"
+  ),
+  raster_latlim = c(-90, 90),
+  raster_longlim = c(-180, 180),
+  dsp_fld_res = 1
+)
+tyrannidae_geo_motifs$motif_maps[[1]]
+tyrannidae_geo_motifs$motif_maps[[2]]
+tyrannidae_geo_motifs$motif_maps[[3]]
+tyrannidae_geo_motifs$motif_maps[[4]]
+tyrannidae_geo_motifs$motif_maps[[5]]
+```
+
+
 
 `dsp_create_from_gdb` also returns the dispersion fields similar to dispersion fields create.
 

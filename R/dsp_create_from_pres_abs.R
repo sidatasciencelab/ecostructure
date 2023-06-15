@@ -41,22 +41,16 @@
 #' @export
 
 
-dsp_create_from_gdb = function(gdb_object,
-                               raster_resolution = 5,
-                               thresh = 4,
-                               raster_latlim = c(-90,90),
-                               raster_longlim = c(-180,180),
-                               species_feature = "SCINAME",
-                               precision = 0.25,
-                               species_names = NULL,
-                               drop = FALSE){
-  
-  colnames(gdb_object)[colnames(gdb_object) == species_feature] <- "ecos_temp_name"
-  
-  if (!is.null(species_names)) {
-    gdb_object <- gdb_object %>% dplyr::filter(ecos_temp_name %in% 
-                                                 species_names)
-  }
+dsp_create_from_pres_abs <- function(pres_ab,
+                                     r_sfs_ag,
+                                     raster_resolution = 5,
+                                     thresh = 4,
+                                     raster_latlim = c(-90, 90),
+                                     raster_longlim = c(-180, 180),
+                                     species_feature = "SCINAME",
+                                     precision = 0.25,
+                                     species_names = NULL,
+                                     drop = FALSE) {
   
   r <- raster::raster(resolution = raster_resolution, xmn = raster_longlim[1], 
                       xmx = raster_longlim[2], ymn = raster_latlim[1], ymx = raster_latlim[2])
@@ -70,98 +64,45 @@ dsp_create_from_gdb = function(gdb_object,
     idx[[i]] <- as.vector(raster::xyFromCell(r, i, spatial = FALSE))
   }
   
-  idx_coords <- c()
-  for (i in 1:length(idx)) {
-    idx_coords[i] <- raster::cellFromXY(r, idx[[i]])
-  }
-  
-  r_sfs_ag <- list()
-  sp_include <- c()
-  
-  runs <- length(unique(gdb_object$ecos_temp_name))
-  nms_unq <- unique(gdb_object$ecos_temp_name)
-  
-  cat("\n Generating presence-absence matrix for species in gdb_object \n")
-  pb <- txtProgressBar()
-  for (i in 1:runs){
-    breedingranges <- gdb_object %>% 
-      filter(ecos_temp_name == nms_unq[i]) 
-    
-    if (any(!st_geometry_type(breedingranges) %in% c("MULTIPOLYGON", "POLYGON"))){
-      cat("\n gbd data for",nms_unq[i],"contains features that are not POLYGON or MULTIPOLYGON. Dropping those from analysis. \n")
-      
-      breedingranges <- breedingranges[st_geometry_type(breedingranges) %in% c("MULTIPOLYGON", "POLYGON"),]
-      if (nrow(breedingranges) == 0) {
-        cat("\n gbd data for",nms_unq[i],"does not contain any features that are POLYGON or MULTIPOLYGON. Dropping this species from analysis. \n")
-        next
-      }
-    }
+  overlps_sp <- apply(pres_ab, 2, function(x) which(x == 1))
+  overlps_cell <- apply(pres_ab, 1, function(x) which(x == 1))
 
-    r_sfs <- fasterize::fasterize(breedingranges, r_prim,
-                                  fun = "any", by = "ecos_temp_name", background = 0)
-    
-    r_sfs_ag[[i]] <- raster::aggregate(r_sfs, fact = (1/precision) * 
-                                       raster_resolution, fun = max, expand = F)
-    
-    sp_include[i] <- any(as.matrix(r_sfs_ag[[i]]) > 0)
-    
-    setTxtProgressBar(pb, i/runs)
-  }
-  
-  r_sfs <- r_sfs[sp_include]
-  r_sfs_ag <- r_sfs_ag[sp_include]
-  
-  names(r_sfs) <- as.character(unique(gdb_object$ecos_temp_name))[sp_include]
-  names(r_sfs_ag) <- as.character(unique(gdb_object$ecos_temp_name))[sp_include]
-  
-  pres_ab <- sapply(r_sfs_ag, function(x) c(t(raster::as.matrix(x))))
-  
-  rw_nms <- c()
-  for (i in 1:length(idx)){
-    rw_nms[i] <- paste(idx[[i]][2], idx[[i]][1], 
-                       sep = "_")
-  }
-  
-  rownames(pres_ab) <- rw_nms
-  
-  overlps_sp <- apply(pres_ab, 2, function (x) which(x == 1))
-  overlps_cell <- apply(pres_ab, 1, function (x) which(x == 1))
-  
   cells_with_overlap <- which(unlist(lapply(overlps_cell, any)))
   focal_LL <- idx[cells_with_overlap]
   cells_with_asblg <- which(unlist(lapply(overlps_cell, function(x) length(x) > thresh)))
   focal_asblg_LL <- idx[cells_with_asblg]
-  
+
   dispersion.field.raster <- list()
   dispersion.field.matrix <- list()
-  
+
   lat_long_names <- c()
-  
+
   cat("\n Generating disersion fields \n")
   pb <- txtProgressBar()
   for (i in 1:length(cells_with_asblg)) {
     dsp_fld <- sum(stack(r_sfs_ag[overlps_cell[cells_with_asblg[i]][[1]]]))
-    setTxtProgressBar(pb, i/length(cells_with_asblg))
+    setTxtProgressBar(pb, i / length(cells_with_asblg))
     dsp_fld[dsp_fld == 0] <- NA
     dispersion.field.raster[[i]] <- dsp_fld
     dispersion.field.matrix[[i]] <- raster::as.matrix(dsp_fld)
-    lat_long_names[i] <- paste(focal_asblg_LL[[i]][2], 
-                               focal_asblg_LL[[i]][1], 
-                               sep = "_")
+    lat_long_names[i] <- paste(focal_asblg_LL[[i]][2],
+      focal_asblg_LL[[i]][1],
+      sep = "_"
+    )
   }
-  
+
   names(dispersion.field.matrix) <- lat_long_names
   names(dispersion.field.raster) <- lat_long_names
-  
-  if(drop){
-    pres_ab <- pres_ab[rowSums(pres_ab) > 0,]
+
+  if (drop) {
+    pres_ab <- pres_ab[rowSums(pres_ab) > 0, ]
   }
-  
-  dispersion.field <- list(matrix = dispersion.field.matrix, 
-                           raster = dispersion.field.raster, 
-                           pres_ab = pres_ab)
-  
+
+  dispersion.field <- list(
+    matrix = dispersion.field.matrix,
+    raster = dispersion.field.raster,
+    pres_ab = pres_ab
+  )
+
   return(dispersion.field)
 }
-
-
