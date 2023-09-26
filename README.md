@@ -1,3 +1,4 @@
+# ecostructure
 ecostructure: grade-of-membership clustering and visualization for ecology
 =============================================================
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip) 
@@ -5,11 +6,13 @@ ecostructure: grade-of-membership clustering and visualization for ecology
 [![DOI](https://zenodo.org/badge/45345.svg)](https://zenodo.org/badge/latestdoi/####)
 [![Follow](https://img.shields.io/twitter/follow/SIDataScience.svg?style=social&style=flat&logo=twitter&label=Follow&color=blue)](https://twitter.com/SIDataScience)
 
-
+---
 ### :warning: **Version 0.99.1 of ecostructure (github.com/kkdey/ecostructure) is deprecated** :warning:  
 Please make sure you are using the code and docs maintained by the Smithsonian Data Science Lab (github.com/sidataciencelab/ecostructure). 
 
 This package contains functions for fitting [STRUCTURE](http://www.genetics.org/content/155/2/945) type models to ecological data, both at local and global geographic scales, together with GIS based visualizations of the fitted models. These *grade-of-membership* models can be used to assess the local representation of large regional biotas, their degree of intermixing in local assemblages, and their rate of turnover across geographic space owing to environmental or climatic turnover. ecostructure makes use of advances in clustering algorithms, first from the package CountClust in 0.99.1 and now leveraging its successor fastTopics in 2.0. 
+
+---
 
 ### Installation
 
@@ -34,6 +37,8 @@ Then load **ecostructure**
 library(ecostructure)
 ```
 
+---
+
 ### Visualizations
 
 Some examples of visualizations produced using our **ecostructure** package
@@ -55,6 +60,8 @@ White, Alexander E. and Dey, Kushal K. and and Stephens, Matthew and Price, Trev
 - [Kushal K Dey](https://www.deylab.net/)
 - [Matthew Stephens](http://stephenslab.uchicago.edu/)
 - [Trevor Price](https://pondside.uchicago.edu/ecol-evol/people/price.html)
+
+---
 
 ### Questions?
 
