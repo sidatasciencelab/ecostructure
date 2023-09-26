@@ -3,12 +3,12 @@
 #'
 #' @description Reads a data frame or a matrix of local site-species abundances,
 #' with rows being sites and columns being species, along with GIS data files for
-#' each of the species (may be more too) ocurring in the local data matrix. The function
+#' each of the species (may be more too) occurring in the local data matrix. The function
 #' produces a dispersion field of the regional presence pattern for each site in 
 #' a user-specified latitudinal and longitudinal range.
 #'
 #' @param local_data abundance site (row) x species (column) matrix/data frame.
-#' @param gis_data_type One of c("shp","gdb"). Are the GIS data in seperate shapefiles 
+#' @param gis_data_type One of c("shp","gdb"). Are the GIS data in separate shapefiles 
 #'                      or in a geodatabase file?
 #' @param shp_dir The directory that contains shapefiles for all the
 #'                       species in the local data matrix.
@@ -23,13 +23,13 @@
 #' @param raster_longlim The longitudinal range of the desired dispersion field.
 #' @param raster_resolution The scale resolution of the raster in degrees.
 #' @param raster_resolution The precision of the initial estimation provided to fasterize. 
-#'                          fasterize tends to undercount small species ranges, so is required 
+#'                          fasterize tends to under count small species ranges, so is required 
 #'                          to keep at a low value in order detect species presence in a square degree cell.
-#'                          Most users will not need to change, but increaseing this value will 
+#'                          Most users will not need to change, but increasing this value will 
 #'                          speed up the function but with potential for error. 
 #' @param base_local If the count of a species in a local site is less than base_local,
 #'                    it is assumed to be absent from the site. The default is 0.
-#'                    Non zero values may result from obsrvational or data
+#'                    Non zero values may result from observational or data
 #'                    recording errors
 #' @param optional_species_names If the column name corresponding to some species
 #'                      does not match with the GIS data, the user might need

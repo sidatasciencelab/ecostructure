@@ -1,7 +1,7 @@
 #' @title Prepare counts data for trait-collapsed species
 #' 
 #' @description Starting from a taxonomic species abundance matrix, produces
-#' a new matrix, with features now collpased vesions of the species where the
+#' a new matrix, with features now collapsed versions of the species where the
 #' collapsing is done by trait level information. Binning is done on the species
 #' based on their trait level similarity- where similarity is determined by
 #' a dendogram produced by hierarchical clustering. 

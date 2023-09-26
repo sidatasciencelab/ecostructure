@@ -10,11 +10,11 @@
 #' @param raster_longlim The longitudinal range.
 #' @param raster_resolution The resolution of the raster in degrees.
 #' @param precision The precision of the initial estimation provided to fasterize. 
-#'                          fasterize tends to undercount small species ranges, so is required 
+#'                          fasterize tends to under count small species ranges, so is required 
 #'                          to keep at a low value in order detect species presences.
-#'                          Most users will not need to change, but increaseing this value will 
+#'                          Most users will not need to change, but increasing this value will 
 #'                          speed up the function but with potential for error. 
-#' @param thresh The number of co-occuring species required to generate a dispersion field for that map cell. 
+#' @param thresh The number of co-occurring species required to generate a dispersion field for that map cell. 
 #' @param drop Boolean. If T sites with 0 overlapping species will be dropped from the final presence-absence matrix.
 #'             Defaults to false.  
 #' @param species_feature The name of the feature (column) that contains the species names 

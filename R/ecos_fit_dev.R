@@ -16,8 +16,7 @@
 #' @return Returns a model fit with \code{omega} as cluster membership
 #'         probabilities and \code{theta} as cluster feature matrix.
 #'
-#' @importFrom maptpx topics
-#' @importFrom methClust meth_topics
+#' @importFrom fastTopics fit_topic_model
 #'
 #' @examples
 #'

@@ -1,7 +1,7 @@
-#' @title Creates heatmap for a geographic motif 
+#' @title Creates heat map for a geographic motif 
 #'
 #' @description Takes the motif fitted from \code{ecos_fit} and plots the theta
-#' component as a heatmap across space using suitable raster information. 
+#' component as a heat map across space using suitable raster information. 
 #'
 #' @param theta_mat The theta output from the model fit from 
 #'                  \code{ecos_fit}
@@ -16,7 +16,7 @@
 #'            exactly as in the PROJ.4 documentation. To be evaluated by sp::CRS(). 
 #'            default '+proj=longlat +ellps=WGS84'. 
 #'            
-#' @return Returns a heatmap plot, similar to the \code{dsp_plot_map} function
+#' @return Returns a heat map plot, similar to the \code{dsp_plot_map} function
 #'         for the theta matrix using the specified raster,
 #'         
 #' @keywords dispersion field, motif, maps
@@ -107,4 +107,3 @@ dsp_motif = function(theta_mat,
   return(ll)
 }
 
-#test2 <- dispersion_fields_motif(test$topic_fit$theta)
