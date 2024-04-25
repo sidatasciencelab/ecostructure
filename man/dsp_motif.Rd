@@ -2,7 +2,7 @@
 % Please edit documentation in R/dsp_motif.R
 \name{dsp_motif}
 \alias{dsp_motif}
-\title{Creates heatmap for a geographic motif}
+\title{Creates heat map for a geographic motif}
 \usage{
 dsp_motif(
   theta_mat,
@@ -35,12 +35,12 @@ exactly as in the PROJ.4 documentation. To be evaluated by sp::CRS().
 default '+proj=longlat +ellps=WGS84'.}
 }
 \value{
-Returns a heatmap plot, similar to the \code{dsp_plot_map} function
+Returns a heat map plot, similar to the \code{dsp_plot_map} function
 for the theta matrix using the specified raster,
 }
 \description{
 Takes the motif fitted from \code{ecos_fit} and plots the theta
-component as a heatmap across space using suitable raster information.
+component as a heat map across space using suitable raster information.
 }
 \examples{
 

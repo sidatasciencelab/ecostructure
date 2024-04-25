@@ -45,6 +45,6 @@ Suggests:
     knitr, roxygen2, RColorBrewer, devtools
 VignetteBuilder: knitr
 biocViews: Software, Visualization, Ecology
-Remotes: stephenslab/fastTopics
+Remotes: stephenslab/fastTopics, linxihui/NNLM
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1

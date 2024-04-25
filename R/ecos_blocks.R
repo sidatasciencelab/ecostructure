@@ -39,7 +39,6 @@
 #'             blocker_metadata = east_west_dir,
 #'             order_metadata = elevation_metadata)
 #'
-#' @importFrom CountClust StructureGGplot
 #' @import grid
 #' @importFrom gridExtra grid.arrange
 #'

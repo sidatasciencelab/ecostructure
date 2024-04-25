@@ -1,10 +1,3 @@
-#' Local abundance data of Himalayan bird species with metadata
-#' A dataset of bird abundance counts with site and feature metadata
-#' @format An ExpressionSet object with 38 sites (rows) and 
-#' 304 species (columns) including phenoData which is site metadata and 
-#' featureData which consists of feature metadata
-"himalayan_birds"
-
 #' Abundances of Himalayan bird species in local communities across elevations
 #' A dataset of bird species abundances in local communities in the Himalayas
 #' @format A matrix object with 38 sites (rows) and 
@@ -64,7 +57,6 @@
 #' @format A list comprising of an omega and theta matrices obtained from
 #' \code{ecostructure_fit()} on \code{indian_birds_pa} data for K=2
 "pres_ab_fit"
-
 
 
 #' A dispersion field matrix example - used for creating a map

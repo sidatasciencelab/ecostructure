@@ -28,7 +28,6 @@
 #'
 #' @importFrom  picante randomizeMatrix
 #' @import slam
-#' @importFrom CountClust FitGoM
 #' @importFrom stats dmultinom density
 #'
 #' @examples
