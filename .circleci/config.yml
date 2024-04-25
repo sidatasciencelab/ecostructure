@@ -18,9 +18,9 @@ jobs:
           name: Install package dependencies
           command: |
             mkdir -p ~/R/Library
-            Rscript -e 'install.packages(c("devtools","remotes","quadprog","MCMCpack","irlba","Rtsne","uwot","dplyr","Rcpp","RcppArmadillo","RcppParallel","progress","pbapply","ggplot2","ggrepel","cowplot","plotly","htmlwidgets","testthat","Ternary","raster","sp","utils","grid","gridExtra","phytools","fasterize","latticeExtra","picante","rasterVis","scales","slam","SpatialExtremes","ape","mapplots","Biobase","SQUAREM","boot","slam","fastTopics"))'
-            Rscript -e 'devtools::install_github("kkdey/methclust",upgrade="never",force=TRUE)'
-            Rscript -e 'devtools::install_github("kkdey/CountClust",upgrade="never",force=TRUE)'
+            Rscript -e 'install.packages(c("devtools","remotes","quadprog","MCMCpack","irlba","Rtsne","uwot","dplyr","Rcpp","RcppArmadillo","RcppParallel","progress","pbapply","ggplot2","ggrepel","cowplot","plotly","htmlwidgets","testthat","Ternary","raster","sp","utils","grid","gridExtra","phytools","fasterize","latticeExtra","picante","rasterVis","scales","slam","SpatialExtremes","ape","mapplots","Biobase","SQUAREM","boot","slam"))'
+            Rscript -e 'remotes::install_github("stephenslab/fastTopics")'
+            Rscript -e 'remotes::install_github("linxihui/NNLM")'
       - run:
           name: Session information and installed package versions
           command: |
