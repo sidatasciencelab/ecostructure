@@ -22,9 +22,9 @@ Install **ecostructure** following the instructions below.
 install.packages(devtools)
 install.packages("sf")
 devtools::install_github("kkdey/methClust")
-devtools::install_github("kkdey/maptpx"). # this is an updated version of CRAN package maptpx
+devtools::install_github("kkdey/maptpx") # this is an updated version of CRAN package maptpx
 devtools::install_github("kkdey/CountClust")
-devtools::install_github("sidatsciencelab/ecostructure")
+devtools::install_github("sidatasciencelab/ecostructure")
 ```
 **ecostructure** requires access to the "gfortran" library. Mac OS X
 users may encounter the error "library not found for -lgfortran" when

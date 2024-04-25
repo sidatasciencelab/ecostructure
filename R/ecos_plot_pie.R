@@ -112,7 +112,7 @@ ecos_plot_pie = function(omega = NULL,
   
   if(is.null(bgmap_path)){
     sf::sf_use_s2(sf_use_s2)
-    message("reading background map shapefile from inst/extdata/ne_110m_coastline 
+    message("reading background map shapefile from inst/extdata/ne_110m_land 
             folder")
     GlobalCoast <- sf::st_read(system.file("extdata","ne_110m_land",
                      "ne_110m_land.shp",package = "ecostructure"), quiet=T)

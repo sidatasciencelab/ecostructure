@@ -37,9 +37,10 @@ Imports:
     reshape2,
     plyr,
     mapplots,
-    scale,
+    scales,
     ape,
-    phytools
+    phytools,
+    slam
 Suggests:
     knitr, roxygen2, RColorBrewer, devtools
 VignetteBuilder: knitr

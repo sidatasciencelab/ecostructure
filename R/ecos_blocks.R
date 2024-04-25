@@ -123,7 +123,7 @@ ecos_blocks = function(omega,
                       ncol = layout[2],
                       nrow = layout[1],
                       top=grid::textGrob(structure_control$main_title,
-                      gp=gpar(fontsize=structure_control$panel_title_size,
+                      gp=grid::gpar(fontsize=structure_control$panel_title_size,
                       font=structure_control$panel_title_font))))
 
 }

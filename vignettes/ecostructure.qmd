@@ -91,7 +91,9 @@ devtools::install_github("sidatasciencelab/ecostructure")
 Then load **ecostructure**
 
 ```{r warning=FALSE, message=FALSE}
-library(ecostructure)
+#library(ecostructure)
+remotes::install_github("stephenslab/fastTopics")
+remotes::install_github("linxihui/NNLM")
 library(fastTopics)
 set.seed(1)
 ```
@@ -145,11 +147,12 @@ The `ecos_fit` function fits the Grade of Membership model. The first version of
 We use `ecos_fit` to evaluate structure in the Himalayan birds dataset. These data are counts of species in sites, and so the function fits a Multinomial model to generate *species abundance motifs*. The data structure (abundance or presence/absence) is evaluated by the function automatically.
 
 ```{r message=FALSE, warning=FALSE}
+#source("R/ecos_fit_dev.R")
 #fit <- ecos_fit(species_counts, K = 2)
 ```
 
 ```{r message=FALSE, warning=FALSE}
-fit <- ecos_fit_dev(species_counts, K = 2, sparse = F,
+fit <- ecos_fit_dev(species_counts, K = 3, sparse = F,
                     num_iter_main = 1000, 
                     num_iter_refine = 1000)
 ```
@@ -212,6 +215,7 @@ We again use `ecos_fit` to fit Grade of Membership models on binary presence-abs
 
 ```{r echo=TRUE, eval=FALSE}
 data("indian_birds_pa")
+load("../data/indian_birds_pa.rda")
 ```
 
 ```{r echo=TRUE, eval=FALSE}
@@ -230,6 +234,7 @@ We can take the output from the model fit and again visualize the membership pro
 
 ```{r}
 ecos_plot_pie(omega = pres_ab_fit$omega,
+                      bgmap_path = "../inst/extdata/ne_110m_land",
                       lat_lim = c(5,50),
                       long_lim = c(55,120),
                       path = "geostructure_plot.png")
@@ -303,8 +308,10 @@ local_him_disp <- dsp_create_from_survey(local_data = species_counts,
 We can generate maps for all of the dispersion fields using the function `dsp_plot_map`. We provide the dispersion fields for our 38 Himalayan community surveys, `dispersion_field_ex`, as a list of matrices.
 
 ```{r}
-data("dispersion_field_ex")
+#data("dispersion_field_ex")
+load("../data/dispersion_field_ex.rda")
 dsp_plots <- dsp_plot_map(dispersion_field_ex,
+                          bgmap_path = "../inst/extdata/ne_110m_land",
   raster_latlim = c(5, 50), 
   raster_longlim = c(50, 120),
   scale = "percentage"

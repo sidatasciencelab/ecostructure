@@ -26,9 +26,9 @@ set.seed(1)
 
 
 ```{r load-data}
-him_birds_cn <- t(as.matrix(read.csv("data/him_birds_cn.csv", row.names = 1)))
-him_birds_md <- t(as.matrix(read.csv("data/him_spec_md.csv", row.names = 1)))
-him_grids_md <- as.matrix(read.csv("data/him_grid_md.csv", row.names = 1))
+load("data/him_birds_cn.rda")
+load("data/him_birds_md.rda")
+load("data/him_grids_md.rda")
 dim(him_birds_cn)
 ```
 
