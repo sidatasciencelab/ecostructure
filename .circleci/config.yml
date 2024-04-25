@@ -7,7 +7,8 @@ jobs:
       R_LIBS: ~/R/Library
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       _R_CHECK_FORCE_SUGGESTS_: false
-      NOT_CRAN: true
+      NOT_CRAN: true 
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - restore_cache:
           keys:
@@ -20,6 +21,14 @@ jobs:
             mkdir -p ~/R/Library
             Rscript -e 'update.packages("Matrix")'
             Rscript -e 'install.packages(c("devtools","remotes","quadprog","gtools","irlba","Rtsne","uwot","dplyr","Rcpp","RcppArmadillo","RcppParallel","progress","pbapply","ggplot2","ggrepel","cowplot","plotly","htmlwidgets","testthat","Ternary","RhpcBLASctl","raster","sp","utils","grid","gridExtra","phytools","fasterize","latticeExtra","picante","rasterVis","scales","slam","SpatialExtremes","ape","mapplots","Biobase","SQUAREM","boot","slam"))'
+      - save_cache:
+          key: r-pkg-cache-{{ arch }}-{{ .Branch }}
+          paths:
+            - "~/R/Library"
+      - run:
+          name: Install github dependencies
+          command: |
+            mkdir -p ~/R/Library
             Rscript -e 'devtools::install_github("slowkow/ggrepel",upgrade="never",force=TRUE)'
             Rscript -e 'devtools::install_github("stephens999/ashr",upgrade="never",force=TRUE)'
             Rscript -e 'devtools::install_github("stephens999/fastTopics",upgrade="never",force=TRUE)'
