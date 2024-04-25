@@ -91,7 +91,7 @@ devtools::install_github("sidatasciencelab/ecostructure")
 Then load **ecostructure**
 
 ```{r warning=FALSE, message=FALSE}
-#library(ecostructure)
+library(ecostructure)
 #remotes::install_github("stephenslab/fastTopics")
 #remotes::install_github("linxihui/NNLM")
 library(fastTopics)
