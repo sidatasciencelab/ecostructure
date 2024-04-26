@@ -8,7 +8,6 @@ jobs:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       _R_CHECK_FORCE_SUGGESTS_: false
       NOT_CRAN: true 
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - restore_cache:
           keys:
@@ -33,6 +32,8 @@ jobs:
             Rscript -e 'devtools::install_github("stephens999/ashr",upgrade="never",force=TRUE)'
             Rscript -e 'devtools::install_github("stephens999/fastTopics",upgrade="never",force=TRUE)'
             Rscript -e 'devtools::install_github("linxihui/NNLM",upgrade="never",force=TRUE)'
+      - env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       - run:
           name: Session information and installed package versions
           command: |
