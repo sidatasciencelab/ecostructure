@@ -19,12 +19,9 @@ This package contains functions for fitting [STRUCTURE](http://www.genetics.org/
 Install **ecostructure** following the instructions below.
 
 ```R
-install.packages(devtools)
-install.packages("sf")
-devtools::install_github("kkdey/methClust")
-devtools::install_github("kkdey/maptpx") # this is an updated version of CRAN package maptpx
-devtools::install_github("kkdey/CountClust")
-devtools::install_github("sidatasciencelab/ecostructure")
+remotes::install_github("stephenslab/fastTopics")
+remotes::install_github("linxihui/NNLM")
+remotes::install_github("sidatasciencelab/ecostructure")
 ```
 **ecostructure** requires access to the "gfortran" library. Mac OS X
 users may encounter the error "library not found for -lgfortran" when
