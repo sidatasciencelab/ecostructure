@@ -80,12 +80,9 @@ Also, be sure to cite to the specific [Zenodo DOI](##ZenodoLink) for the package
 To install **ecostructure**, first install the package dependencies.
 
 ```{r warning=FALSE, message=FALSE}
-#install.packages(devtools)
-#install.packages("sf")
-#devtools::install_github("kkdey/methClust")
-#devtools::install_github("kkdey/maptpx") # this is an updated version of CRAN package maptpx
-#devtools::install_github("kkdey/CountClust")
-devtools::install_github("sidatasciencelab/ecostructure")
+#remotes::install_github("stephenslab/fastTopics")
+#remotes::install_github("linxihui/NNLM")
+#remotes::install_github("sidatasciencelab/ecostructure")
 ```
 
 Then load **ecostructure**
